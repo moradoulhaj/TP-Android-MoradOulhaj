@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            // Wrapping your navigation setup in a Theme
+            // Wrapping  navigation setup in a Theme
             TPAndroidAppTheme {
                 // Create a NavController
                 val navController = rememberNavController()
