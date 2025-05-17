@@ -1,6 +1,5 @@
 package com.example.tpandroidapp.ui.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -10,17 +9,20 @@ import com.example.tpandroidapp.ui.screens.ProductDetailScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
-    // The NavHost manages the navigation
     NavHost(navController = navController, startDestination = "product_list") {
-        // Define the route for the ProductListScreen
+
+        // List screen route
         composable("product_list") {
             ProductListScreen(navController = navController)
         }
 
-        // Define the route for the ProductDetailScreen
+        // Detail screen route with argument
         composable("product_detail/{productId}") { backStackEntry ->
             val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            ProductDetailScreen(productId = productId, navController = navController)
+            ProductDetailScreen(
+                productId = productId,
+                navController = navController
+            )
         }
     }
 }
