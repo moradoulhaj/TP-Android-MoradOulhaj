@@ -1,40 +1,75 @@
 package com.example.tpandroidapp.ui.screens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.tpandroidapp.data.ProductRepository
+import com.example.tpandroidapp.ui.ProductDetail.*
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductDetailScreen(productId: String, navController: NavController) {
-    val product = ProductRepository.getProductById(productId)
+fun ProductDetailScreen(
+    productId: String,
+    navController: NavController,
+    viewModel: ProductDetailViewModel = viewModel()
+) {
+    val state by viewModel.state
 
-    product?.let {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Image(
-                painter = painterResource(id = product.imageResId),
-                contentDescription = product.name
+    LaunchedEffect(productId) {
+        viewModel.handleIntent(ProductDetailIntent.LoadProduct(productId))
+    }
+
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = { Text(text = "Détails du produit") },
+                navigationIcon = {
+                    IconButton(onClick = { navController.navigateUp() }) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Retour"
+                        )
+                    }
+                }
             )
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(text = product.name, style = MaterialTheme.typography.titleLarge)
-            Text(text = "$${product.price}", style = MaterialTheme.typography.bodyLarge)
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(onClick = { navController.popBackStack() }) {
-                Text("Back")
+        }
+    ) { paddingValues ->
+        Box(modifier = Modifier.padding(paddingValues)) {
+            when (state) {
+                is ProductDetailState.Loading -> {
+                    Text("Chargement...")
+                }
+
+                is ProductDetailState.Success -> {
+                    val product = (state as ProductDetailState.Success).product
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Image(
+                            painter = painterResource(id = product.imageResId),
+                            contentDescription = product.name,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(240.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                        Text(text = product.name, style = MaterialTheme.typography.titleLarge)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = "Prix : ${product.price} MAD", style = MaterialTheme.typography.bodyLarge)
+                    }
+                }
+
+                is ProductDetailState.Error -> {
+                    Text("Erreur : ${(state as ProductDetailState.Error).message}")
+                }
             }
         }
-    } ?: run {
-        Text("Product not found", modifier = Modifier.padding(16.dp))
     }
 }
