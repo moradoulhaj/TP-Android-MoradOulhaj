@@ -49,7 +49,7 @@ debugImplementation("androidx.compose.ui:ui-tooling")
 debugImplementation("androidx.compose.ui:ui-test-manifest")
 androidTestImplementation(platform("androidx.compose:compose-bom:<version>"))
 androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-
+```
 ## 🧩Screenshots
 
 ### Catalog View
