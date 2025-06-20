@@ -86,7 +86,7 @@ fun SignupScreen(
         if (state.isSuccess) {
             Text("Account created successfully!", color = MaterialTheme.colorScheme.primary)
 
-            // Navigate after success (example to login)
+            // Navigate after success to login
             LaunchedEffect(Unit) {
                 navController.navigate("login") {
                     popUpTo("signup") { inclusive = true }

@@ -1,18 +1,12 @@
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.*
 import androidx.compose.material3.MaterialTheme.colorScheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -29,7 +23,7 @@ fun LoginScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(colorScheme.background) // Fond clair
+            .background(colorScheme.background)
             .padding(16.dp)
     ) {
         Row(
@@ -43,25 +37,12 @@ fun LoginScreen(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            // Image à gauche sur grands écrans (simulé ici, afficher ou non selon taille écran)
-            // À remplacer par ta ressource image locale (ici exemple avec placeholder)
-            /* if (isLargeScreen) {
-                Image(
-                    painter = painterResource(id = R.drawable.your_image),
-                    contentDescription = "Bookshelf",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                        .clip(RoundedCornerShape(topStart = 16.dp, bottomStart = 16.dp))
-                )
-            } */
+            // TODO: Ajouter une image à gauche sur grands écrans si souhaité
 
-            // Formulaire
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .padding(start = 16.dp, end = 16.dp),
+                    .padding(horizontal = 16.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -79,7 +60,6 @@ fun LoginScreen(
                     label = { Text("Email") },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email)
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -107,7 +87,7 @@ fun LoginScreen(
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
                             strokeWidth = 2.dp,
-                            color = Color.White
+                            color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
                         Text("Sign In")
@@ -116,9 +96,9 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                state.errorMessage?.let {
+                state.errorMessage?.let { errorMsg ->
                     Text(
-                        text = it,
+                        text = errorMsg,
                         color = colorScheme.error,
                         modifier = Modifier.padding(top = 8.dp)
                     )
@@ -130,6 +110,11 @@ fun LoginScreen(
                         color = colorScheme.primary,
                         modifier = Modifier.padding(top = 8.dp)
                     )
+                    LaunchedEffect(Unit) {
+                        navController.navigate("product_list") {
+                            popUpTo("login") { inclusive = true }
+                        }
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(20.dp))

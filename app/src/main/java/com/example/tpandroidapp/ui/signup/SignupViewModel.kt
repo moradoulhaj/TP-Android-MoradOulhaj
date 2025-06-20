@@ -2,6 +2,8 @@ package com.example.tpandroidapp.ui.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tpandroidapp.data.model.UserRegister
+import com.example.tpandroidapp.data.network.RetrofitClient.apiService
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -34,7 +36,6 @@ class SignupViewModel : ViewModel() {
     private fun submitSignup() {
         val currentState = _state.value
 
-        // Simple validation example
         if (currentState.fullname.isBlank() || currentState.email.isBlank() ||
             currentState.password.isBlank() || currentState.phone.isBlank()) {
             _state.value = currentState.copy(errorMessage = "Please fill all fields")
@@ -43,19 +44,38 @@ class SignupViewModel : ViewModel() {
 
         _state.value = currentState.copy(isLoading = true, errorMessage = null)
 
-        // Simulate network call
         viewModelScope.launch {
-            // Here you would call your API
+            try {
+                val request = UserRegister(
+                    fullname = currentState.fullname,
+                    email = currentState.email,
+                    password = currentState.password,
+                    phone = currentState.phone
+                )
 
-            // Simulate delay for demo
-            kotlinx.coroutines.delay(1500)
+                val response = apiService.register(request)
 
-            // Example success
-            _state.value = currentState.copy(
-                isLoading = false,
-                isSuccess = true,
-                errorMessage = null
-            )
+                if (response.isSuccessful && response.body() != null) {
+                    // Signup successful
+                    _state.value = currentState.copy(
+                        isLoading = false,
+                        isSuccess = true,
+                        errorMessage = null
+                    )
+                } else {
+                    // API returned error
+                    _state.value = currentState.copy(
+                        isLoading = false,
+                        errorMessage = "Signup failed: ${response.message()}"
+                    )
+                }
+            } catch (e: Exception) {
+                // Network or other error
+                _state.value = currentState.copy(
+                    isLoading = false,
+                    errorMessage = "Signup error: ${e.localizedMessage ?: "Unknown error"}"
+                )
+            }
         }
     }
 }
