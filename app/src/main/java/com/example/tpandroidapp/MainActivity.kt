@@ -9,14 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.example.tpandroidapp.ui.navigation.AppNavigation
-import com.example.tpandroidapp.ui.theme.TPAndroidAppTheme
+import com.example.tpandroidapp.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             // Wrapping  navigation setup in a Theme
-            TPAndroidAppTheme {
+            AppTheme {
                 // Create a NavController
                 val navController = rememberNavController()
 

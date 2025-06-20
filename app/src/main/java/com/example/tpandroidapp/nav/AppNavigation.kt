@@ -1,5 +1,6 @@
 package com.example.tpandroidapp.ui.navigation
 
+import LoginScreen
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -9,7 +10,17 @@ import com.example.tpandroidapp.ui.screens.ProductDetailScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
-    NavHost(navController = navController, startDestination = "product_list") {
+    NavHost(navController = navController, startDestination = "login") {  // Démarre sur login
+
+        // Login screen route
+        composable("login") {
+            LoginScreen(navController = navController)
+        }
+
+        // Signup screen route
+//        composable("signup") {
+//            SignupScreen(navController = navController)
+//        }
 
         // List screen route
         composable("product_list") {
