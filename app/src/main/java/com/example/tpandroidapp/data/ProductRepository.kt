@@ -2,20 +2,20 @@ package com.example.tpandroidapp.data
 
 import com.example.tpandroidapp.R
 import com.example.tpandroidapp.data.model.Product
+import com.example.tpandroidapp.data.network.ApiService
+import retrofit2.Response
 
-object ProductRepository {
-
-    val productList = listOf(
-        Product("1", "Phone", 699.99, R.drawable.iphone),
-        Product("2", "Laptop", 1299.99, R.drawable.laptop),
-        Product("3", "Headphones", 199.99, R.drawable.headphones)
-    )
-
-    fun getProductById(id: String): Product? {
-        return productList.find { it.id == id }
+class ProductRepository(private val apiService: ApiService) {
+        suspend fun getAllProducts(): Response<List<Product>> {
+            return apiService.getProducts()
+        }
+    suspend fun getProductById(id: String): Product? {
+        val response = apiService.getProductById(id)
+        return if (response.isSuccessful) {
+            response.body()
+        } else {
+            null
+        }
     }
 
-    fun getAllProducts(): List<Product> {
-        return productList
     }
-}

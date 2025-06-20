@@ -1,18 +1,19 @@
-package com.example.tpandroidapp.ui.screens
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.tpandroidapp.ui.ProductDetail.*
+import coil.compose.AsyncImage
+import com.example.tpandroidapp.ui.ProductDetail.ProductDetailIntent
+import com.example.tpandroidapp.ui.ProductDetail.ProductDetailState
+import com.example.tpandroidapp.ui.ProductDetail.ProductDetailViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -33,26 +34,22 @@ fun ProductDetailScreen(
                 title = { Text(text = "Détails du produit") },
                 navigationIcon = {
                     IconButton(onClick = { navController.navigateUp() }) {
-                        Icon(
-                            imageVector = Icons.Default.ArrowBack,
-                            contentDescription = "Retour"
-                        )
+                        Icon(Icons.Filled.ArrowBack, contentDescription = "Retour")
                     }
                 }
             )
         }
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
+        Box(modifier = Modifier.padding(paddingValues).fillMaxSize()) {
             when (state) {
                 is ProductDetailState.Loading -> {
-                    Text("Chargement...")
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.Center))
                 }
-
                 is ProductDetailState.Success -> {
                     val product = (state as ProductDetailState.Success).product
                     Column(modifier = Modifier.padding(16.dp)) {
-                        Image(
-                            painter = painterResource(id = product.imageResId),
+                        AsyncImage(
+                            model = product.img1,
                             contentDescription = product.name,
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -63,11 +60,16 @@ fun ProductDetailScreen(
                         Text(text = product.name, style = MaterialTheme.typography.titleLarge)
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(text = "Prix : ${product.price} MAD", style = MaterialTheme.typography.bodyLarge)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Text(text = product.description, style = MaterialTheme.typography.bodyMedium)
                     }
                 }
-
                 is ProductDetailState.Error -> {
-                    Text("Erreur : ${(state as ProductDetailState.Error).message}")
+                    Text(
+                        text = "Erreur : ${(state as ProductDetailState.Error).message}",
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.Center)
+                    )
                 }
             }
         }

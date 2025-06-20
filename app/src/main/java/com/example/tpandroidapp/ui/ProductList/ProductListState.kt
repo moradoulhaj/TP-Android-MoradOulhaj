@@ -3,8 +3,9 @@ package com.example.tpandroidapp.ui.ProductList
 import com.example.tpandroidapp.data.model.Product
 
 
-sealed class ProductListState {
-    object Loading : ProductListState()
-    data class Success(val products: List<Product>) : ProductListState()
-    data class Error(val message: String) : ProductListState()
-}
+data class ProductListState(
+    val isLoading: Boolean = false,
+    val products: List<Product> = emptyList(),
+    val selectedCategory: String? = null,
+    val errorMessage: String? = null
+)

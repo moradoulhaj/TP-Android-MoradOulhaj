@@ -1,6 +1,7 @@
 package com.example.tpandroidapp.ui.navigation
 
 import LoginScreen
+import ProductDetailScreen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -8,8 +9,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.tpandroidapp.ui.screens.ProductListScreen
-import com.example.tpandroidapp.ui.screens.ProductDetailScreen
+import com.example.tpandroidapp.ui.ProductList.ProductListScreen
 import com.example.tpandroidapp.ui.signup.SignupScreen
 
 @Composable
