@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.tpandroidapp.ui.screens.ProductListScreen
 import com.example.tpandroidapp.ui.screens.ProductDetailScreen
+import com.example.tpandroidapp.ui.signup.SignupScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
@@ -17,10 +18,10 @@ fun AppNavigation(navController: NavHostController) {
             LoginScreen(navController = navController)
         }
 
-        // Signup screen route
-//        composable("signup") {
-//            SignupScreen(navController = navController)
-//        }
+         //Signup screen route
+        composable("signup") {
+            SignupScreen(navController = navController)
+        }
 
         // List screen route
         composable("product_list") {
