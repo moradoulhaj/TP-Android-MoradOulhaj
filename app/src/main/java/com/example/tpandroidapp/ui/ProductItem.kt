@@ -14,7 +14,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.layout.ContentScale
 import androidx.navigation.NavController
-import com.example.tpandroidapp.model.Product
+import com.example.tpandroidapp.data.model.Product
 
 @Composable
 fun ProductItem(

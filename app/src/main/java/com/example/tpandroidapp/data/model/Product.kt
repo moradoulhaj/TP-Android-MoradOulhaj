@@ -1,4 +1,4 @@
-package com.example.tpandroidapp.model
+package com.example.tpandroidapp.data.model
 
 data class Product(
     val id: String,

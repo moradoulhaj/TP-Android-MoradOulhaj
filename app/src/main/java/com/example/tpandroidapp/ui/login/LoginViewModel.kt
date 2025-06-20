@@ -1,11 +1,14 @@
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tpandroidapp.data.network.RetrofitClient
+import com.example.tpandroidapp.data.repository.UserRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class LoginViewModel : ViewModel() {
-    private val _state = MutableStateFlow(LoginState())
+class LoginViewModel(
+    private val repository: UserRepository = UserRepository(RetrofitClient.apiService)
+): ViewModel() {    private val _state = MutableStateFlow(LoginState())
     val state: StateFlow<LoginState> = _state
 
     fun onIntent(intent: LoginIntent) {
@@ -17,15 +20,21 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun submitLogin() {
-        _state.value = _state.value.copy(isLoading = true, errorMessage = null)
-        viewModelScope.launch {
-            // Fake delay or logic
-            kotlinx.coroutines.delay(1500)
-            if (_state.value.email == "test@example.com" && _state.value.password == "password") {
-                _state.value = _state.value.copy(isLoading = false, isSuccess = true)
-            } else {
-                _state.value = _state.value.copy(isLoading = false, errorMessage = "Invalid credentials")
-            }
+        val currentState = _state.value
+        if (currentState.email.isBlank() || currentState.password.isBlank()) {
+            _state.value = currentState.copy(errorMessage = "Email and password must not be empty")
+            return
         }
-    }
-}
+        _state.value = currentState.copy(isLoading = true, errorMessage = null)
+        viewModelScope.launch {
+            try {
+                val response = repository.login(currentState.email, currentState.password)
+                if (response.isSuccessful && response.body() != null) {
+                    _state.value = currentState.copy(isLoading = false, isSuccess = true)
+                } else {
+                    _state.value = currentState.copy(isLoading = false, errorMessage = "Login failed: ${response.code()}")
+                }
+            } catch (e: Exception) {
+                _state.value = currentState.copy(isLoading = false, errorMessage = e.localizedMessage ?: "Unknown error")
+            }
+        }}}

@@ -1,7 +1,7 @@
 package com.example.tpandroidapp.data
 
 import com.example.tpandroidapp.R
-import com.example.tpandroidapp.model.Product
+import com.example.tpandroidapp.data.model.Product
 
 object ProductRepository {
 

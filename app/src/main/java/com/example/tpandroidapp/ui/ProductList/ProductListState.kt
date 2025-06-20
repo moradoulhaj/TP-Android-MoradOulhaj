@@ -1,6 +1,6 @@
 package com.example.tpandroidapp.ui.ProductList
 
-import com.example.tpandroidapp.model.Product
+import com.example.tpandroidapp.data.model.Product
 
 
 sealed class ProductListState {
