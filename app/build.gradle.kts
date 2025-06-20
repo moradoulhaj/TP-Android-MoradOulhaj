@@ -43,6 +43,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.activity.compose)
+    implementation("androidx.compose.material3:material3:1.2.1")
 
     // Hilt
     implementation("com.google.dagger:hilt-android:2.48")

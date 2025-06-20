@@ -1,7 +1,7 @@
 package com.example.tpandroidapp.ui.ProductDetail
 
 
-import com.example.tpandroidapp.model.Product
+import com.example.tpandroidapp.data.model.Product
 
 sealed class ProductDetailState {
     object Loading : ProductDetailState()

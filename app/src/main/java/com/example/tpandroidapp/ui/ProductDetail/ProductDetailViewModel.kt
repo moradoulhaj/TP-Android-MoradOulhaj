@@ -3,7 +3,7 @@ package com.example.tpandroidapp.ui.ProductDetail
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.tpandroidapp.data.ProductRepository
-import com.example.tpandroidapp.model.Product
+import com.example.tpandroidapp.data.model.Product
 
 class ProductDetailViewModel : ViewModel() {
 
