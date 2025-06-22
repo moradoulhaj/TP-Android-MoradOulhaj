@@ -14,7 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.tpandroidapp.ui.auth.AuthViewModel
 import com.example.tpandroidapp.ui.navigation.AppNavigation
 import com.example.tpandroidapp.ui.theme.AppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val authViewModel: AuthViewModel by viewModels()
