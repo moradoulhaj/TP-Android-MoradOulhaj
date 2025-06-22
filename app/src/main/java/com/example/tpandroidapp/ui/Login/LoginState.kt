@@ -1,3 +1,5 @@
+package com.example.tpandroidapp.ui.Login
+
 data class LoginState(
     val email: String = "",
     val password: String = "",
