@@ -2,13 +2,17 @@ package com.example.tpandroidapp.ui.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.tpandroidapp.data.model.UserRegister
-import com.example.tpandroidapp.data.network.RetrofitClient.apiService
+import com.example.tpandroidapp.data.repository.UserRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignupViewModel : ViewModel() {
+@HiltViewModel
+class SignupViewModel @Inject constructor(
+    private val repository: UserRepository
+) : ViewModel() {
 
     private val _state = MutableStateFlow(SignupState())
     val state: StateFlow<SignupState> = _state
@@ -46,31 +50,26 @@ class SignupViewModel : ViewModel() {
 
         viewModelScope.launch {
             try {
-                val request = UserRegister(
+                val response = repository.register(
                     fullname = currentState.fullname,
                     email = currentState.email,
                     password = currentState.password,
                     phone = currentState.phone
                 )
 
-                val response = apiService.register(request)
-
                 if (response.isSuccessful && response.body() != null) {
-                    // Signup successful
                     _state.value = currentState.copy(
                         isLoading = false,
                         isSuccess = true,
                         errorMessage = null
                     )
                 } else {
-                    // API returned error
                     _state.value = currentState.copy(
                         isLoading = false,
                         errorMessage = "Signup failed: ${response.message()}"
                     )
                 }
             } catch (e: Exception) {
-                // Network or other error
                 _state.value = currentState.copy(
                     isLoading = false,
                     errorMessage = "Signup error: ${e.localizedMessage ?: "Unknown error"}"

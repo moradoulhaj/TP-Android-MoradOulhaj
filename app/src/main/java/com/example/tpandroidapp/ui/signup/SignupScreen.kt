@@ -7,12 +7,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
 fun SignupScreen(
-    viewModel: SignupViewModel = viewModel(),
+    viewModel: SignupViewModel = hiltViewModel(),
     navController: NavController
 ) {
     val state by viewModel.state.collectAsState()

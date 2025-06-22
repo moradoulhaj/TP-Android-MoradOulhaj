@@ -2,10 +2,18 @@ package com.example.tpandroidapp.ui.ProductDetail
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.tpandroidapp.data.ProductRepository
-import com.example.tpandroidapp.data.model.Product
+import androidx.lifecycle.viewModelScope
+import com.example.tpandroidapp.data.repository.ProductRepository
+import com.example.tpandroidapp.ui.ProductDetail.ProductDetailIntent
+import com.example.tpandroidapp.ui.ProductDetail.ProductDetailState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ProductDetailViewModel : ViewModel() {
+@HiltViewModel
+class ProductDetailViewModel @Inject constructor(
+    private val repository: ProductRepository
+) : ViewModel() {
 
     var state = mutableStateOf<ProductDetailState>(ProductDetailState.Loading)
         private set
@@ -13,12 +21,24 @@ class ProductDetailViewModel : ViewModel() {
     fun handleIntent(intent: ProductDetailIntent) {
         when (intent) {
             is ProductDetailIntent.LoadProduct -> {
-                val product = ProductRepository.getProductById(intent.productId)
-                if (product != null) {
-                    state.value = ProductDetailState.Success(product)
+                loadProduct(intent.productId)
+            }
+        }
+    }
+
+    private fun loadProduct(productId: String) {
+        state.value = ProductDetailState.Loading
+
+        viewModelScope.launch {
+            try {
+                val response = repository.getProductById(productId)
+                if (response.isSuccessful && response.body() != null) {
+                    state.value = ProductDetailState.Success(response.body()!!)
                 } else {
-                    state.value = ProductDetailState.Error("Produit introuvable")
+                    state.value = ProductDetailState.Error("Erreur : ${response.code()}")
                 }
+            } catch (e: Exception) {
+                state.value = ProductDetailState.Error("Erreur : ${e.localizedMessage ?: "Inconnue"}")
             }
         }
     }
