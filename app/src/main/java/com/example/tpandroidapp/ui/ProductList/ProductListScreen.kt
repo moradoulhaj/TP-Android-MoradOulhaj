@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.example.tpandroidapp.data.model.Product
+import com.example.tpandroidapp.ui.utils.ProductCardWithCarousel
 
 @Composable
 fun ProductListScreen(

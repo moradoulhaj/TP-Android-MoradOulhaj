@@ -6,14 +6,18 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.tpandroidapp.data.model.Comment
+import com.example.tpandroidapp.ui.utils.CommentItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,8 +27,9 @@ fun ProductDetailScreen(
     viewModel: ProductDetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.state
+    val comments by viewModel.comments
 
-    // Trigger loading product detail when productId changes
+    // Load product + comments
     LaunchedEffect(productId) {
         viewModel.handleIntent(ProductDetailIntent.LoadProduct(productId))
     }
@@ -46,7 +51,7 @@ fun ProductDetailScreen(
                 is ProductDetailState.Loading -> {
                     Box(
                         Modifier.fillMaxSize(),
-                        contentAlignment = androidx.compose.ui.Alignment.Center
+                        contentAlignment = Alignment.Center
                     ) {
                         CircularProgressIndicator()
                     }
@@ -88,20 +93,31 @@ fun ProductDetailScreen(
                         Spacer(modifier = Modifier.height(8.dp))
 
                         product.category?.let {
-                            Text(
-                                text = "Catégorie : $it",
-                                style = MaterialTheme.typography.bodyMedium
-                            )
+                            Text(text = "Catégorie : $it", style = MaterialTheme.typography.bodyMedium)
                         }
 
-                        // Add more details if you want (e.g. originalPrice, promotionPercent...)
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Divider()
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // 🔽 Commentaires
+                        Text("Commentaires", style = MaterialTheme.typography.titleMedium)
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        if (comments.isEmpty()) {
+                            Text("Aucun commentaire pour ce produit.")
+                        } else {
+                            comments.forEach { comment ->
+                                CommentItem(comment)
+                            }
+                        }
                     }
                 }
 
                 is ProductDetailState.Error -> {
                     Box(
                         Modifier.fillMaxSize(),
-                        contentAlignment = androidx.compose.ui.Alignment.Center
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(
                             text = "Erreur : ${(state as ProductDetailState.Error).message}",

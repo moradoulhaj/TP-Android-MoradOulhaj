@@ -1,4 +1,4 @@
-package com.example.tpandroidapp.ui.ProductList
+package com.example.tpandroidapp.ui.utils
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
