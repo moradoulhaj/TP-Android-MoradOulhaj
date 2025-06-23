@@ -62,6 +62,8 @@ dependencies {
     // Lifecycle
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.2")
 
+    implementation ("androidx.datastore:datastore-preferences:1.1.0")
+
 
     implementation("io.coil-kt:coil-compose:2.3.0")
 
