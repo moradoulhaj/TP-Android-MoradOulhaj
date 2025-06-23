@@ -14,10 +14,10 @@ import androidx.navigation.NavController
 import com.example.tpandroidapp.data.model.Product
 
 @Composable
-
 fun ProductListScreen(
     navController: NavController,
-    viewModel: ProductListViewModel = hiltViewModel()
+    viewModel: ProductListViewModel = hiltViewModel(),
+    modifier: Modifier = Modifier
 ) {
     val state by viewModel.state
     var selectedCategory by remember { mutableStateOf<String?>(null) }
@@ -28,13 +28,13 @@ fun ProductListScreen(
 
     when (state) {
         is ProductListState.Loading -> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
         }
 
         is ProductListState.Error -> {
-            Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text("Erreur : ${(state as ProductListState.Error).message}")
             }
         }
@@ -47,7 +47,7 @@ fun ProductListScreen(
             val filtered = products.filter { selectedCategory == null || it.category == selectedCategory }
 
             LazyColumn(
-                modifier = Modifier
+                modifier = modifier
                     .fillMaxSize()
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
@@ -106,7 +106,6 @@ fun ProductListScreen(
                     }
                 }
 
-                // 🔹 Filtered Products
                 // 🔹 Filtered Products Carousel
                 item {
                     Text("🔍 Filtered Products", style = MaterialTheme.typography.titleLarge)
@@ -122,7 +121,6 @@ fun ProductListScreen(
                         }
                     }
                 }
-
             }
         }
     }

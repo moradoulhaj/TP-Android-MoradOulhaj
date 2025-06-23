@@ -7,9 +7,10 @@ import com.example.tpandroidapp.data.model.UserData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class UserPreferences(private val context: Context) {
+// Define the singleton DataStore instance once, outside the class:
+val Context.dataStore by preferencesDataStore("user_prefs")
 
-    private val Context.dataStore by preferencesDataStore("user_prefs")
+class UserPreferences(private val context: Context) {
 
     private object Keys {
         val USER_ID = intPreferencesKey("user_id")
