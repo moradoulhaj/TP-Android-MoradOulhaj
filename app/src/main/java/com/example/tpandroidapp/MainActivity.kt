@@ -11,6 +11,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.example.tpandroidapp.ui.MainScreen
 import com.example.tpandroidapp.ui.auth.AuthViewModel
 import com.example.tpandroidapp.ui.navigation.AppNavigation
 import com.example.tpandroidapp.ui.theme.AppTheme
@@ -27,13 +28,19 @@ class MainActivity : ComponentActivity() {
             AppTheme {
                 val navController = rememberNavController()
 
-                // Observe l'état de connexion
+                // Observe login state
                 val isLoggedIn by authViewModel.isLoggedIn.collectAsState()
 
-                AppNavigation(
-                    navController = navController,
-                    isLoggedIn = isLoggedIn
-                )
+                if (isLoggedIn) {
+                    // User logged in: show MainScreen with bottom bar etc
+                    MainScreen()
+                } else {
+                    // User not logged in: show authentication navigation
+                    AppNavigation(
+                        navController = navController,
+                        isLoggedIn = isLoggedIn
+                    )
+                }
             }
         }
     }
