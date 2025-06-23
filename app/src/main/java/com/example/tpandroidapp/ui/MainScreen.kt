@@ -4,29 +4,23 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import androidx.navigation.NavHostController
 import com.example.tpandroidapp.data.datastore.UserPreferences
 import com.example.tpandroidapp.ui.ProductList.ProductListScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-
-fun MainScreen() {
-    val navController = rememberNavController()
+fun MainScreen(navController: NavHostController) {
     var selectedTab by remember { mutableStateOf("home") }
 
     val context = LocalContext.current
@@ -43,7 +37,7 @@ fun MainScreen() {
                 title = {
                     Text(
                         "BOOKHAVEN",
-                        color = Color.White // make text white
+                        color = Color.White // text color white
                     )
                 },
                 colors = TopAppBarDefaults.smallTopAppBarColors(
@@ -57,14 +51,14 @@ fun MainScreen() {
                             modifier = Modifier
                                 .padding(end = 12.dp)
                                 .size(36.dp)
-                                .clip(CircleShape) // make avatar rounded
+                                .clip(CircleShape) // rounded avatar
                         )
                     } else {
                         IconButton(onClick = { /* TODO: profile or menu */ }) {
                             Icon(
                                 imageVector = Icons.Default.AccountCircle,
                                 contentDescription = "User Avatar",
-                                tint = Color.White // icon color white too
+                                tint = Color.White // icon white tint
                             )
                         }
                     }
@@ -91,14 +85,17 @@ fun MainScreen() {
                     selected = selectedTab == "commandes",
                     onClick = { selectedTab = "commandes" }
                 )
-
             }
         }
     ) { paddingValues ->
         when (selectedTab) {
-            "home" -> ProductListScreen(navController = navController, modifier = Modifier.fillMaxSize())
-//             "cart" -> CartScreen(...)
-            // "commandes" -> OrdersScreen(...)
+            "home" -> ProductListScreen(
+                navController = navController,
+                modifier = Modifier.fillMaxSize().padding(paddingValues)
+            )
+            // You can add CartScreen and OrdersScreen similarly here:
+            // "cart" -> CartScreen(navController, Modifier.padding(paddingValues))
+            // "commandes" -> OrdersScreen(navController, Modifier.padding(paddingValues))
         }
     }
 }

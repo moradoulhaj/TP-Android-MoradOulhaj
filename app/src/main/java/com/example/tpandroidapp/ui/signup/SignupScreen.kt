@@ -12,9 +12,9 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 
 @Composable
-fun SignupScreen(
-    viewModel: SignupViewModel = hiltViewModel(),
-    navController: NavController
+fun SignupScreen(    navController: NavController
+,
+                     viewModel: SignupViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsState()
 
