@@ -1,8 +1,9 @@
 package com.example.tpandroidapp.ui.Login
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.tpandroidapp.data.datastore.UserPreferences
+import com.example.tpandroidapp.data.model.UserData
 import com.example.tpandroidapp.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val repository: UserRepository
+    private val repository: UserRepository,
+    private val userPreferences: UserPreferences
 ) : ViewModel() {
 
     private val _state = MutableStateFlow(LoginState())
@@ -51,6 +53,12 @@ class LoginViewModel @Inject constructor(
             try {
                 val response = repository.login(currentState.email, currentState.password)
                 if (response.isSuccessful && response.body() != null) {
+                    val userData: UserData = response.body()!!
+
+                    // Save user data and token persistently
+                    userPreferences.saveUser(userData)
+
+                    // Update state & call success callback
                     _state.value = currentState.copy(isLoading = false, isSuccess = true, errorMessage = null)
                     handleLoginSuccess()
                 } else {
