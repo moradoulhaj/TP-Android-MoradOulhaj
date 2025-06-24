@@ -22,6 +22,7 @@ import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import kotlinx.coroutines.flow.collectLatest
 import com.example.tpandroidapp.data.model.UserData
+import com.example.tpandroidapp.ui.utils.UserInfoItem
 import java.text.SimpleDateFormat
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -127,17 +128,4 @@ fun ProfileScreen(
     }
 }
 
-@Composable
-fun UserInfoItem(label: String, value: String) {
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .background(Color(0xFFF3F3F3), RoundedCornerShape(6.dp))
-            .padding(12.dp)
-    ) {
-        Text(text = label, fontWeight = FontWeight.Bold, color = Color.Gray)
-        Spacer(modifier = Modifier.height(4.dp))
-        Text(text = value, style = MaterialTheme.typography.bodyMedium)
-    }
-}
+
