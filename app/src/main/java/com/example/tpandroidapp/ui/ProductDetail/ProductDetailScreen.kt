@@ -1,22 +1,29 @@
 package com.example.tpandroidapp.ui.ProductDetail
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
-import com.example.tpandroidapp.data.model.Comment
 import com.example.tpandroidapp.ui.utils.CommentItem
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -29,7 +36,9 @@ fun ProductDetailScreen(
     val state by viewModel.state
     val comments by viewModel.comments
 
-    // Load product + comments
+    var newComment by remember { mutableStateOf("") }
+    var stars by remember { mutableStateOf(3) }
+
     LaunchedEffect(productId) {
         viewModel.handleIntent(ProductDetailIntent.LoadProduct(productId))
     }
@@ -42,18 +51,19 @@ fun ProductDetailScreen(
                     IconButton(onClick = { navController.navigateUp() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Retour")
                     }
-                }
+                },
+                colors = TopAppBarDefaults.smallTopAppBarColors(containerColor = Color(0xFF6200EE))
             )
         }
     ) { paddingValues ->
-        Box(modifier = Modifier.padding(paddingValues)) {
+        Box(modifier = Modifier
+            .padding(paddingValues)
+            .background(Color.White)) {
+
             when (state) {
                 is ProductDetailState.Loading -> {
-                    Box(
-                        Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        CircularProgressIndicator()
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        CircularProgressIndicator(color = Color(0xFF6200EE))
                     }
                 }
 
@@ -73,34 +83,51 @@ fun ProductDetailScreen(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .height(250.dp)
+                                    .clip(RoundedCornerShape(12.dp))
                             )
-                            Spacer(modifier = Modifier.height(16.dp))
                         }
 
-                        Text(text = product.name, style = MaterialTheme.typography.titleLarge)
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        Text(product.name, style = MaterialTheme.typography.titleLarge)
                         Spacer(modifier = Modifier.height(8.dp))
 
                         product.description?.let {
-                            Text(text = it, style = MaterialTheme.typography.bodyMedium)
-                            Spacer(modifier = Modifier.height(12.dp))
+                            Text(it, style = MaterialTheme.typography.bodyMedium)
                         }
 
+                        Spacer(modifier = Modifier.height(12.dp))
+
                         Text(
-                            text = "Prix : ${product.price} MAD",
+                            "Prix : ${product.price} MAD",
                             style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            color = Color(0xFF6200EE)
                         )
+
                         Spacer(modifier = Modifier.height(8.dp))
 
                         product.category?.let {
-                            Text(text = "Catégorie : $it", style = MaterialTheme.typography.bodyMedium)
+                            Text("Catégorie : $it", style = MaterialTheme.typography.bodyMedium)
+                        }
+
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // ⭐ Add to cart button
+                        Button(
+                            onClick = { /* viewModel.addToCart(...) */ },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
+                        ) {
+                            Icon(Icons.Default.ShoppingCart, contentDescription = null, tint = Color.White)
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text("Ajouter au Panier", color = Color.White)
                         }
 
                         Spacer(modifier = Modifier.height(24.dp))
                         Divider()
                         Spacer(modifier = Modifier.height(16.dp))
 
-                        // 🔽 Commentaires
+                        // 💬 Comments section
                         Text("Commentaires", style = MaterialTheme.typography.titleMedium)
                         Spacer(modifier = Modifier.height(8.dp))
 
@@ -109,8 +136,58 @@ fun ProductDetailScreen(
                         } else {
                             comments.forEach { comment ->
                                 CommentItem(comment)
+                                Spacer(modifier = Modifier.height(8.dp))
                             }
                         }
+
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Divider()
+                        Spacer(modifier = Modifier.height(16.dp))
+
+                        // ✏️ Add comment input
+                        Text("Ajouter un commentaire", style = MaterialTheme.typography.titleMedium)
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        BasicTextField(
+                            value = newComment,
+                            onValueChange = { newComment = it },
+                            textStyle = TextStyle(color = Color.Black),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(100.dp)
+                                .background(Color(0xFFF3F3F3), RoundedCornerShape(8.dp))
+                                .padding(12.dp)
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        // ⭐ Star rating
+                        Row {
+                            for (i in 1..5) {
+                                Text(
+                                    text = if (i <= stars) "⭐" else "☆",
+                                    modifier = Modifier
+                                        .size(28.dp)
+                                        .clickable { stars = i },
+                                    fontSize = MaterialTheme.typography.titleLarge.fontSize
+                                )
+                            }
+                        }
+                        Spacer(modifier = Modifier.height(12.dp))
+
+                        // ✅ Submit comment
+                        Button(
+                            onClick = {
+                                // Call viewModel to submit
+                                // viewModel.addComment(product.id, newComment, stars)
+                            },
+                            modifier = Modifier.align(Alignment.End),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
+                        ) {
+                            Text("Envoyer", color = Color.White)
+                        }
+
+                        Spacer(modifier = Modifier.height(24.dp))
                     }
                 }
 
