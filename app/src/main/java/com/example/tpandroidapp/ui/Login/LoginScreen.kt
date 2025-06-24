@@ -104,7 +104,7 @@ fun LoginScreen(
 
                 if (state.isSuccess) {
                     LaunchedEffect(Unit) {
-                        navController.navigate("product_list") {
+                        navController.navigate("home") {
                             popUpTo("login") { inclusive = true }
                         }
                     }

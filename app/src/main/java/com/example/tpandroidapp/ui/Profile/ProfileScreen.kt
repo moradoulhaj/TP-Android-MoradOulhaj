@@ -29,6 +29,19 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 import java.util.TimeZone
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
+import kotlinx.coroutines.flow.collectLatest
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
@@ -39,7 +52,10 @@ fun ProfileScreen(
 ) {
     val context = LocalContext.current
 
-    // Format ISO date to readable date
+    val scrollState = rememberScrollState()
+    var isEditing by remember { mutableStateOf(false) }
+
+    // Format date function
     fun formatDate(isoDate: String): String {
         return try {
             val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
@@ -52,12 +68,18 @@ fun ProfileScreen(
             isoDate
         }
     }
-
     val avatarUrl = user.fullname.replace(" ", "+").let {
         "https://ui-avatars.com/api/?name=$it&background=6200EE&color=fff&size=128"
     }
 
-    // Collect events like Logout toast and navigation
+    // State vars with initial user data
+    var fullname by remember { mutableStateOf(user.fullname) }
+    var email by remember { mutableStateOf(user.email) }
+    var phone by remember { mutableStateOf(user.phone) }
+    var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
+
+    // Events collection same as before
     LaunchedEffect(Unit) {
         viewModel.eventFlow.collectLatest { event ->
             when (event) {
@@ -74,7 +96,6 @@ fun ProfileScreen(
     }
 
     Scaffold(
-
         modifier = modifier
     ) { paddingValues ->
 
@@ -86,10 +107,12 @@ fun ProfileScreen(
                 .padding(16.dp)
         ) {
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .verticalScroll(scrollState),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Avatar on top
+                // Avatar
                 Image(
                     painter = rememberAsyncImagePainter(avatarUrl),
                     contentDescription = "Avatar",
@@ -98,22 +121,121 @@ fun ProfileScreen(
                         .padding(bottom = 16.dp)
                         .background(Color(0xFF6200EE), CircleShape)
                         .padding(4.dp)
-                        .clip(CircleShape),
-                    contentScale = ContentScale.Crop
+                        .clip(CircleShape)
                 )
 
-                // User info fields aligned start
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    UserInfoItem(label = "Nom complet", value = user.fullname)
-                    UserInfoItem(label = "Email", value = user.email)
-                    UserInfoItem(label = "Téléphone", value = user.phone)
-                    UserInfoItem(label = "Role", value = if (user.admin == "0") "Customer" else "Admin")
-                    UserInfoItem(label = "Joined at", value = formatDate(user.createdAt))
+                    OutlinedTextField(
+                        value = fullname,
+                        onValueChange = { fullname = it },
+                        label = { Text("Nom complet") },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = isEditing,
+                        singleLine = true
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
 
-                    Spacer(modifier = Modifier.weight(1f))
+                    OutlinedTextField(
+                        value = email,
+                        onValueChange = { email = it },
+                        label = { Text("Email") },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = isEditing,
+                        singleLine = true
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = phone,
+                        onValueChange = { phone = it },
+                        label = { Text("Téléphone") },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = isEditing,
+                        singleLine = true
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    if (isEditing) {
+                        OutlinedTextField(
+                            value = password,
+                            onValueChange = { password = it },
+                            label = { Text("Mot de passe (laisser vide si inchangé)") },
+                            modifier = Modifier.fillMaxWidth(),
+                            visualTransformation = PasswordVisualTransformation(),
+                            singleLine = true
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        OutlinedTextField(
+                            value = confirmPassword,
+                            onValueChange = { confirmPassword = it },
+                            label = { Text("Confirmer le mot de passe") },
+                            modifier = Modifier.fillMaxWidth(),
+                            visualTransformation = PasswordVisualTransformation(),
+                            singleLine = true
+                        )
+                        Spacer(modifier = Modifier.height(16.dp))
+                    }
+if (!isEditing){
+    UserInfoItem(label = "Role", value = if (user.admin == "0") "Customer" else "Admin")
+    UserInfoItem(label = "Joined at", value = formatDate(user.createdAt))
+}
+
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    if (isEditing) {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween
+                        ) {
+                            Button(
+                                onClick = {
+                                    // Cancel editing, revert to original values
+                                    fullname = user.fullname
+                                    email = user.email
+                                    phone = user.phone
+                                    password = ""
+                                    confirmPassword = ""
+                                    isEditing = false
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color.Gray)
+                            ) {
+                                Text("Annuler", color = Color.White)
+                            }
+
+                            Button(
+                                onClick = {
+                                    viewModel.handleIntent(
+                                        ProfileIntent.UpdateUser(
+                                            fullname = fullname,
+                                            email = email,
+                                            phone = phone,
+                                            password = password.takeIf { it.isNotBlank() },
+                                            confirmPassword = confirmPassword.takeIf { it.isNotBlank() }
+                                        )
+                                    )
+                                    isEditing = false
+                                },
+                                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
+                            ) {
+                                Text("Enregistrer", color = Color.White)
+                            }
+                        }
+                    } else {
+                        Button(
+                            onClick = { isEditing = true },
+                            modifier = Modifier.fillMaxWidth(),
+                            colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
+                        ) {
+                            Text("Modifier les informations", color = Color.White)
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
 
                     Button(
                         onClick = { viewModel.handleIntent(ProfileIntent.Logout) },
@@ -127,5 +249,4 @@ fun ProfileScreen(
         }
     }
 }
-
 
