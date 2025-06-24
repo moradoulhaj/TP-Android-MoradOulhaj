@@ -13,7 +13,7 @@ class OrderRepository @Inject constructor(
         return apiService.placeOrder(orderRequest)
     }
 
-    suspend fun getUserOrders(userId: String): Response<List<OrderResponse>> {
+    suspend fun getUserOrders(userId: Int): Response<List<OrderResponse>> {
         return apiService.getUserOrders(userId)
     }
 }

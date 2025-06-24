@@ -18,6 +18,7 @@ import coil.compose.AsyncImage
 import androidx.navigation.NavHostController
 import com.example.tpandroidapp.data.datastore.UserPreferences
 import com.example.tpandroidapp.ui.Cart.CartScreen
+import com.example.tpandroidapp.ui.Order.UserOrdersScreen
 import com.example.tpandroidapp.ui.ProductList.ProductListScreen
 import com.example.tpandroidapp.ui.Profile.ProfileScreen
 
@@ -112,7 +113,15 @@ fun MainScreen(navController: NavHostController) {
                         .padding(paddingValues)
                 )
             }
-            // "commandes" -> OrdersScreen(navController, Modifier.padding(paddingValues))
+            "commandes" -> userData?.let {
+                UserOrdersScreen(
+                    userData = it,
+                    navController = navController,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                )
+            }
              "profile" -> userData?.let {
                  ProfileScreen(navController,
                      it,Modifier.padding(paddingValues))

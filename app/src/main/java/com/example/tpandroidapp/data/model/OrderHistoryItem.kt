@@ -1,7 +1,7 @@
 package com.example.tpandroidapp.data.model
 
 data class OrderRequest(
-    val idUser: String,
+    val idUser: Int,
     val phone: String,
     val address: String,
     val fullname: String,
@@ -19,8 +19,8 @@ data class CartItem(
 )
 
 data class OrderResponse(
-    val status: Boolean,
-    val delivery: Boolean,
+    val status: Int,
+    val delivery: Int,
     val id: Int,
     val idUser: String,
     val phone: String,
@@ -30,5 +30,8 @@ data class OrderResponse(
     val total: Double,
     val updatedAt: String,
     val createdAt: String
-)
+){
+    val isDelivered: Boolean
+        get() = delivery == 1
+}
 

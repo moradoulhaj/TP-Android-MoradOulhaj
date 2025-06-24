@@ -66,7 +66,7 @@ interface ApiService {
     // Fetch all orders for a specific user
     @GET("/api/v1/history")
     suspend fun getUserOrders(
-        @Query("userId") userId: String
+        @Query("idUser") userId: Int
     ): Response<List<OrderResponse>>
 
 

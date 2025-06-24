@@ -212,7 +212,7 @@ fun CartScreen(
                                 val total = currentCart.sumOf { it.priceProduct * it.count }.toInt()
 
                                 val orderRequest = OrderRequest(
-                                    idUser = userData.id?.toString() ?: "",
+                                    idUser = userData.id ?: 0,
                                     phone = userData.phone ?: "",
                                     address = address,
                                     fullname = userData.fullname ?: "",
