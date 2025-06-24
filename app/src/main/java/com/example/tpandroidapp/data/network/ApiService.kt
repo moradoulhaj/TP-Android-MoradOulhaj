@@ -36,7 +36,7 @@ interface ApiService {
     //Cart api
     @GET("/api/v1/carts")
     suspend fun getCartItems(
-        @Header("Authorization") token: String
+        @Header("token") token: String
     ): Response<List<Cart>>
 
     @POST("/api/v1/carts")
