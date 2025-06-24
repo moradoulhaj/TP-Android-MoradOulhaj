@@ -27,7 +27,7 @@ interface ApiService {
     @GET("/api/v1/products")
     suspend fun getProducts(): Response<List<Product>>
     @GET("/api/v1/products/{id}")
-    suspend fun getProductById(@Path("id") id: String): Response<Product>
+    suspend fun getProductById(@Path("id") id: Int): Response<Product>
     // Comments
     @GET("api/v1/comments")
     suspend fun getCommentsByProduct(@Query("idProduct") productId: Int): Response<List<Comment>>

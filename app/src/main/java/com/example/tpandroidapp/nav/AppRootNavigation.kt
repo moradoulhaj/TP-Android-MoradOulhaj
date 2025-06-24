@@ -28,7 +28,9 @@ fun AppRootNavigation(navController: NavHostController, isLoggedIn: Boolean) {
         navigation(startDestination = "home", route = "main") {
             composable("home") { MainScreen(navController) }
             composable("product_detail/{productId}") { backStackEntry ->
-                val productId = backStackEntry.arguments?.getString("productId") ?: ""
+                val productIdString = backStackEntry.arguments?.getString("productId") ?: "0"
+                val productId = productIdString.toIntOrNull() ?: 0 // safe conversion, default 0 if invalid
+
                 ProductDetailScreen(productId, navController)
             }
             // Add other main routes here (cart, commandes, etc.)

@@ -1,5 +1,6 @@
 package com.example.tpandroidapp.ui.ProductDetail
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -14,22 +15,22 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.tpandroidapp.ui.utils.CommentItem
+import kotlinx.coroutines.flow.collect
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductDetailScreen(
-    productId: String,
+    productId: Int,
     navController: NavController,
     viewModel: ProductDetailViewModel = hiltViewModel()
 ) {
@@ -38,6 +39,18 @@ fun ProductDetailScreen(
 
     var newComment by remember { mutableStateOf("") }
     var stars by remember { mutableStateOf(3) }
+    val context = LocalContext.current
+
+    // Collect toast events from ViewModel
+    LaunchedEffect(Unit) {
+        viewModel.eventFlow.collect { event ->
+            when (event) {
+                is ProductDetailViewModel.UiEvent.ShowToast -> {
+                    Toast.makeText(context, event.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
 
     LaunchedEffect(productId) {
         viewModel.handleIntent(ProductDetailIntent.LoadProduct(productId))
@@ -56,9 +69,11 @@ fun ProductDetailScreen(
             )
         }
     ) { paddingValues ->
-        Box(modifier = Modifier
-            .padding(paddingValues)
-            .background(Color.White)) {
+        Box(
+            modifier = Modifier
+                .padding(paddingValues)
+                .background(Color.White)
+        ) {
 
             when (state) {
                 is ProductDetailState.Loading -> {
@@ -114,7 +129,18 @@ fun ProductDetailScreen(
 
                         // ⭐ Add to cart button
                         Button(
-                            onClick = { /* viewModel.addToCart(...) */ },
+                            onClick = {
+                                // Call AddToCart intent, assuming you have user token and count (here count=1)
+                                // Replace `userToken` with your actual token variable or get from your app state
+                                val userToken = "your_user_token_here"
+                                viewModel.handleIntent(
+                                    ProductDetailIntent.AddToCart(
+                                        token = userToken,
+                                        productId = product.id,
+                                        count = 1
+                                    )
+                                )
+                            },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
                         ) {
@@ -178,8 +204,21 @@ fun ProductDetailScreen(
                         // ✅ Submit comment
                         Button(
                             onClick = {
-                                // Call viewModel to submit
-                                // viewModel.addComment(product.id, newComment, stars)
+                                // Call PostComment intent, again assuming you have user info here:
+                                val userId = 1 // replace with actual user ID
+                                val fullname = "User Fullname" // replace with actual user full name
+
+                                viewModel.handleIntent(
+                                    ProductDetailIntent.PostComment(
+                                        productId = product.id,
+                                        userId = userId,
+                                        fullname = fullname,
+                                        content = newComment,
+                                        stars = List(stars) { true } + List(5 - stars) { false }
+                                    )
+                                )
+                                newComment = ""  // clear input after send
+                                stars = 3        // reset stars if you want
                             },
                             modifier = Modifier.align(Alignment.End),
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF6200EE))
