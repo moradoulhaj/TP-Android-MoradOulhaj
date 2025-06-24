@@ -19,6 +19,7 @@ import androidx.navigation.NavHostController
 import com.example.tpandroidapp.data.datastore.UserPreferences
 import com.example.tpandroidapp.ui.Cart.CartScreen
 import com.example.tpandroidapp.ui.ProductList.ProductListScreen
+import com.example.tpandroidapp.ui.Profile.ProfileScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -30,9 +31,9 @@ fun MainScreen(navController: NavHostController) {
     val userData by userPreferences.userFlow.collectAsState(initial = null)
     val userToken = userData?.token ?: ""
 
-    val avatarUrl = userData?.fullname?.replace(" ", "+")?.let {
-        "https://ui-avatars.com/api/?name=$it"
-    }
+        val avatarUrl = userData?.fullname?.replace(" ", "+")?.let {
+            "https://ui-avatars.com/api/?name=$it"
+        }
 
     Scaffold(
         topBar = {
@@ -88,6 +89,12 @@ fun MainScreen(navController: NavHostController) {
                     selected = selectedTab == "commandes",
                     onClick = { selectedTab = "commandes" }
                 )
+                NavigationBarItem(
+                    icon = { Icon(Icons.Default.Person, contentDescription = "Profile") },
+                    label = { Text("Profile") },
+                    selected = selectedTab == "profile",
+                    onClick = { selectedTab = "profile" }
+                )
             }
         }
     ) { paddingValues ->
@@ -102,6 +109,11 @@ fun MainScreen(navController: NavHostController) {
                 modifier = Modifier.fillMaxSize()
             )
             // "commandes" -> OrdersScreen(navController, Modifier.padding(paddingValues))
+             "profile" -> userData?.let {
+                 ProfileScreen(navController,
+                     it,Modifier.padding(paddingValues))
+             }
+
         }
     }
 }
