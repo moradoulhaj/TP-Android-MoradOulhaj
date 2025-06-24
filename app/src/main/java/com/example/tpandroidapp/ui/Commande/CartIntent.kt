@@ -1,4 +1,4 @@
-package com.example.tpandroidapp.ui.Cart
+package com.example.tpandroidapp.ui.Commande
 
 import com.example.tpandroidapp.data.model.OrderRequest
 

@@ -103,11 +103,15 @@ fun MainScreen(navController: NavHostController) {
                 navController = navController,
                 modifier = Modifier.fillMaxSize().padding(paddingValues)
             )
-            "cart" -> CartScreen(
-                userToken = userToken,
-                viewModel = hiltViewModel(),
-                modifier = Modifier.fillMaxSize()
-            )
+            "cart" -> userData?.let {
+                CartScreen(
+                    userData = it,
+                    viewModel = hiltViewModel(),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues)
+                )
+            }
             // "commandes" -> OrdersScreen(navController, Modifier.padding(paddingValues))
              "profile" -> userData?.let {
                  ProfileScreen(navController,

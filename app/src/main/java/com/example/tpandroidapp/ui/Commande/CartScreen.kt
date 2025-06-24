@@ -1,4 +1,4 @@
-package com.example.tpandroidapp.ui.Cart
+package com.example.tpandroidapp.ui.Commande
 
 import android.widget.Toast
 import androidx.compose.foundation.Image
