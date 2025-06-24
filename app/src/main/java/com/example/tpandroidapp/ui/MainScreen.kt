@@ -13,9 +13,11 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import androidx.navigation.NavHostController
 import com.example.tpandroidapp.data.datastore.UserPreferences
+import com.example.tpandroidapp.ui.Cart.CartScreen
 import com.example.tpandroidapp.ui.ProductList.ProductListScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,6 +28,7 @@ fun MainScreen(navController: NavHostController) {
     val context = LocalContext.current
     val userPreferences = remember { UserPreferences(context) }
     val userData by userPreferences.userFlow.collectAsState(initial = null)
+    val userToken = userData?.token ?: ""
 
     val avatarUrl = userData?.fullname?.replace(" ", "+")?.let {
         "https://ui-avatars.com/api/?name=$it"
@@ -93,8 +96,11 @@ fun MainScreen(navController: NavHostController) {
                 navController = navController,
                 modifier = Modifier.fillMaxSize().padding(paddingValues)
             )
-            // You can add CartScreen and OrdersScreen similarly here:
-            // "cart" -> CartScreen(navController, Modifier.padding(paddingValues))
+            "cart" -> CartScreen(
+                userToken = userToken,
+                viewModel = hiltViewModel(),
+                modifier = Modifier.fillMaxSize()
+            )
             // "commandes" -> OrdersScreen(navController, Modifier.padding(paddingValues))
         }
     }
