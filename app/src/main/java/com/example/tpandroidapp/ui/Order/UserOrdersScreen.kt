@@ -44,43 +44,83 @@ fun UserOrdersScreen(
 
     when (val currentState = state) {
         is OrderState.Loading -> {
-            Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+            Box(
+                modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
         }
 
         is OrderState.Success -> {
             if (currentState.orders.isEmpty()) {
-                Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Box(
+                    modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
                     Text(
                         text = "Aucune commande trouvée.",
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             } else {
                 LazyColumn(
                     modifier = modifier
                         .fillMaxSize()
-                        .padding(16.dp),
+                        .padding(horizontal = 16.dp, vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp)
                 ) {
                     items(currentState.orders) { order ->
                         Card(
                             modifier = Modifier.fillMaxWidth(),
-                            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+                            colors = CardDefaults.cardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            )
                         ) {
-                            Column(Modifier.padding(16.dp)) {
+                            Column(
+                                Modifier
+                                    .padding(16.dp)
+                            ) {
                                 Text(
                                     text = "Commande #${order.id}",
                                     fontWeight = FontWeight.Bold,
-                                    fontSize = 18.sp
+                                    fontSize = 20.sp,
+                                    color = MaterialTheme.colorScheme.primary
                                 )
-                                Text("Nom : ${order.fullname}")
-                                Text("Téléphone : ${order.phone}")
-                                Text("Adresse : ${order.address}")
-                                Text("Total : ${order.total} MAD")
-                                Text("Date : ${order.createdAt}")
-                                Text("Livrée : ${if (order.isDelivered) "Oui" else "Non"}")
+                                Spacer(modifier = Modifier.height(8.dp))
+
+                                Text(
+                                    "Nom : ${order.fullname}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Text(
+                                    "Téléphone : ${order.phone}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Text(
+                                    "Adresse : ${order.address}",
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
+                                Text(
+                                    "Total : ${order.total} MAD",
+                                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
+                                )
+                                Text(
+                                    "Date : ${order.createdAt}",
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                Spacer(modifier = Modifier.height(4.dp))
+                                Text(
+                                    "Livrée : ${if (order.delivery) "Oui" else "Non"}",
+                                    fontWeight = FontWeight.Medium,
+                                    color = if (order.delivery) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                                )
                             }
                         }
                     }
@@ -89,9 +129,18 @@ fun UserOrdersScreen(
         }
 
         is OrderState.Error -> {
-            Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Erreur : ${currentState.message}", color = MaterialTheme.colorScheme.error)
+            Box(
+                modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    "Erreur : ${currentState.message}",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyLarge,
+                    fontWeight = FontWeight.SemiBold
+                )
             }
         }
     }
 }
+

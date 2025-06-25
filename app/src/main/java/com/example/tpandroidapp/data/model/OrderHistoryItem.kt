@@ -20,7 +20,7 @@ data class CartItem(
 
 data class OrderResponse(
     val status: Int,
-    val delivery: Int,
+    val delivery: Boolean,
     val id: Int,
     val idUser: String,
     val phone: String,
@@ -30,8 +30,4 @@ data class OrderResponse(
     val total: Double,
     val updatedAt: String,
     val createdAt: String
-){
-    val isDelivered: Boolean
-        get() = delivery == 1
-}
-
+)

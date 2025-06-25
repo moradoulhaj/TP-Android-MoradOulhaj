@@ -1,5 +1,6 @@
 package com.example.tpandroidapp.ui.Login
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -8,49 +9,53 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun LoginScreen(
     navController: NavController,
-    viewModel: LoginViewModel = hiltViewModel()  // Proper Hilt ViewModel initialization
+    viewModel: LoginViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
+            .background(MaterialTheme.colorScheme.background),
+        contentAlignment = Alignment.Center
     ) {
-        Row(
+        Image(
+            painter = rememberAsyncImagePainter("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize().graphicsLayer { alpha = 0.6f }
+        )
+        Card(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .padding(16.dp)
-                .shadow(elevation = 16.dp, shape = RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.surface, shape = RoundedCornerShape(16.dp))
-                .padding(24.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+                .fillMaxWidth(0.9f)
+                .padding(16.dp),
+            shape = RoundedCornerShape(16.dp),
+            elevation = CardDefaults.cardElevation(defaultElevation = 12.dp)
         ) {
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(horizontal = 16.dp),
-                verticalArrangement = Arrangement.Center,
+                    .fillMaxWidth()
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Sign In",
+                    text = "Welcome Back",
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
-
-                Spacer(modifier = Modifier.height(24.dp))
 
                 OutlinedTextField(
                     value = state.email,
@@ -60,18 +65,14 @@ fun LoginScreen(
                     singleLine = true
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
-
                 OutlinedTextField(
                     value = state.password,
                     onValueChange = { viewModel.onIntent(LoginIntent.PasswordChanged(it)) },
                     label = { Text("Password") },
                     modifier = Modifier.fillMaxWidth(),
-                    visualTransformation = PasswordVisualTransformation(),
-                    singleLine = true
+                    singleLine = true,
+                    visualTransformation = PasswordVisualTransformation()
                 )
-
-                Spacer(modifier = Modifier.height(24.dp))
 
                 Button(
                     onClick = { viewModel.onIntent(LoginIntent.SubmitLogin) },
@@ -84,36 +85,35 @@ fun LoginScreen(
                     if (state.isLoading) {
                         CircularProgressIndicator(
                             modifier = Modifier.size(24.dp),
-                            strokeWidth = 2.dp,
-                            color = MaterialTheme.colorScheme.onPrimary
+                            color = MaterialTheme.colorScheme.onPrimary,
+                            strokeWidth = 2.dp
                         )
                     } else {
                         Text("Sign In")
                     }
                 }
 
-                Spacer(modifier = Modifier.height(12.dp))
-
-                state.errorMessage?.let { errorMsg ->
+                state.errorMessage?.let { error ->
                     Text(
-                        text = errorMsg,
+                        text = error,
                         color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.padding(top = 8.dp)
+                        style = MaterialTheme.typography.bodyMedium
                     )
                 }
 
+                TextButton(onClick = {
+                    navController.navigate("signup")
+                }) {
+                    Text("Don't have an account? Sign Up")
+                }
+
+                // Navigate to home if login successful
                 if (state.isSuccess) {
                     LaunchedEffect(Unit) {
                         navController.navigate("home") {
                             popUpTo("login") { inclusive = true }
                         }
                     }
-                }
-
-                Spacer(modifier = Modifier.height(20.dp))
-
-                TextButton(onClick = { navController.navigate("signup") }) {
-                    Text("Don't have an account? Sign Up")
                 }
             }
         }
