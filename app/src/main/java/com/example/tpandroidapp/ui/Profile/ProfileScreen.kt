@@ -181,7 +181,7 @@ fun ProfileScreen(
                     }
 if (!isEditing){
     UserInfoItem(label = "Role", value = if (user.admin == "0") "Customer" else "Admin")
-    UserInfoItem(label = "Joined at", value = formatDate(user.createdAt))
+    UserInfoItem(label = "Cree le", value = formatDate(user.createdAt))
 }
 
 
