@@ -1,5 +1,6 @@
 package com.example.tpandroidapp.ui.ProductList
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,9 +9,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.tpandroidapp.data.model.Product
 import com.example.tpandroidapp.ui.utils.ProductCardWithCarousel
 
 @Composable
@@ -35,7 +38,10 @@ fun ProductListScreen(
 
         is ProductListState.Error -> {
             Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text("Erreur : ${(state as ProductListState.Error).message}")
+                Text(
+                    "Erreur : ${(state as ProductListState.Error).message}",
+                    color = MaterialTheme.colorScheme.error
+                )
             }
         }
 
@@ -49,51 +55,35 @@ fun ProductListScreen(
             LazyColumn(
                 modifier = modifier
                     .fillMaxSize()
-                    .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(24.dp)
+                    .padding(horizontal = 16.dp, vertical = 12.dp),
+                verticalArrangement = Arrangement.spacedBy(32.dp)
             ) {
-                // 🔹 New Arrivals Section
+                // New Arrivals
                 item {
-                    Text("🆕 New Arrivals", style = MaterialTheme.typography.titleLarge)
-                    Spacer(Modifier.height(8.dp))
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        items(newArrivals) { product ->
-                            Box(modifier = Modifier.width(280.dp)) {
-                                ProductCardWithCarousel(product, navController)
-                            }
-                        }
-                    }
+                    SectionHeader("Nouveautés")
+                    ProductCarousel(newArrivals, navController)
                 }
 
-                // 🔹 Best Deals Section
+                // Best Deals
                 item {
-                    Text("🔥 Best Deals", style = MaterialTheme.typography.titleLarge)
-                    Spacer(Modifier.height(8.dp))
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        items(bestDeals) { product ->
-                            Box(modifier = Modifier.width(280.dp)) {
-                                ProductCardWithCarousel(product, navController)
-                            }
-                        }
-                    }
+                    SectionHeader("Meilleures Offres")
+                    ProductCarousel(bestDeals, navController)
                 }
 
-                // 🔹 Category Filter
+                // Category Filters
                 item {
-                    Text("📂 Filter by Category", style = MaterialTheme.typography.titleLarge)
-                    Spacer(Modifier.height(8.dp))
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    SectionHeader("Filtrer par Catégorie")
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp)
+                    ) {
                         item {
                             FilterChip(
                                 selected = selectedCategory == null,
                                 onClick = { selectedCategory = null },
-                                label = { Text("All") }
+                                label = { Text("Tous") }
                             )
                         }
                         items(categories) { category ->
@@ -106,21 +96,44 @@ fun ProductListScreen(
                     }
                 }
 
-                // 🔹 Filtered Products Carousel
+                // Filtered Results
                 item {
-                    Text("🔍 Filtered Products", style = MaterialTheme.typography.titleLarge)
-                    Spacer(Modifier.height(8.dp))
-                    LazyRow(
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        items(filtered) { product ->
-                            Box(modifier = Modifier.width(280.dp)) {
-                                ProductCardWithCarousel(product, navController)
-                            }
-                        }
-                    }
+                    ProductCarousel(filtered, navController)
                 }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SectionHeader(title: String) {
+    Surface(
+        color = MaterialTheme.colorScheme.primary.copy(alpha = 0.1f),
+        tonalElevation = 2.dp,
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp)
+    ) {
+        Text(
+            text = title,
+            style = MaterialTheme.typography.titleLarge,
+            color = MaterialTheme.colorScheme.primary,
+            modifier = Modifier.padding(vertical = 12.dp, horizontal = 16.dp)
+        )
+    }
+}
+
+@Composable
+private fun ProductCarousel(products: List<Product>, navController: NavController) {
+    LazyRow(
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp)
+    ) {
+        items(products) { product ->
+            Box(modifier = Modifier.width(280.dp)) {
+                ProductCardWithCarousel(product, navController)
             }
         }
     }
