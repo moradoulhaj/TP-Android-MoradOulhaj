@@ -16,6 +16,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.tpandroidapp.R
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun SignupScreen(
@@ -23,18 +26,33 @@ fun SignupScreen(
     viewModel: SignupViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
+    // Localized strings
+    val createAccountText = stringResource(id = R.string.create_account)
+    val fullnameLabel = stringResource(id = R.string.fullname)
+    val emailLabel = stringResource(id = R.string.email)
+    val passwordLabel = stringResource(id = R.string.password)
+    val phoneLabel = stringResource(id = R.string.phone)
+    val signUpButton = stringResource(id = R.string.sign_up)
+    val accountCreatedText = stringResource(id = R.string.account_created)
+    val alreadyHaveAccount = stringResource(id = R.string.already_have_account)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background),
         contentAlignment = Alignment.Center
-    ) {Image(
-        painter = rememberAsyncImagePainter("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"),
-        contentDescription = null,
-        contentScale = ContentScale.Crop,
-        modifier = Modifier.fillMaxSize().graphicsLayer { alpha = 0.6f }
-    )
+    ) {
+        Image(
+            painter = rememberAsyncImagePainter("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer { alpha = 0.6f }
+        )
+
         Card(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
@@ -50,7 +68,7 @@ fun SignupScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Create Account",
+                    text = createAccountText,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -58,21 +76,21 @@ fun SignupScreen(
                 OutlinedTextField(
                     value = state.fullname,
                     onValueChange = { viewModel.onIntent(SignupIntent.FullnameChanged(it)) },
-                    label = { Text("Full Name") },
+                    label = { Text(fullnameLabel) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 OutlinedTextField(
                     value = state.email,
                     onValueChange = { viewModel.onIntent(SignupIntent.EmailChanged(it)) },
-                    label = { Text("Email") },
+                    label = { Text(emailLabel) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 OutlinedTextField(
                     value = state.password,
                     onValueChange = { viewModel.onIntent(SignupIntent.PasswordChanged(it)) },
-                    label = { Text("Password") },
+                    label = { Text(passwordLabel) },
                     modifier = Modifier.fillMaxWidth(),
                     visualTransformation = PasswordVisualTransformation()
                 )
@@ -80,7 +98,7 @@ fun SignupScreen(
                 OutlinedTextField(
                     value = state.phone,
                     onValueChange = { viewModel.onIntent(SignupIntent.PhoneChanged(it)) },
-                    label = { Text("Phone") },
+                    label = { Text(phoneLabel) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -99,7 +117,7 @@ fun SignupScreen(
                             color = MaterialTheme.colorScheme.onPrimary
                         )
                     } else {
-                        Text("Sign Up")
+                        Text(signUpButton)
                     }
                 }
 
@@ -108,7 +126,7 @@ fun SignupScreen(
                 }
 
                 if (state.isSuccess) {
-                    Text("Account created successfully!", color = MaterialTheme.colorScheme.primary)
+                    Text(accountCreatedText, color = MaterialTheme.colorScheme.primary)
                     LaunchedEffect(Unit) {
                         navController.navigate("login") {
                             popUpTo("signup") { inclusive = true }
@@ -117,9 +135,10 @@ fun SignupScreen(
                 }
 
                 TextButton(onClick = { navController.navigate("login") }) {
-                    Text("Already have an account? Sign in")
+                    Text(alreadyHaveAccount)
                 }
             }
         }
     }
 }
+

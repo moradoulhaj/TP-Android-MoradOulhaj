@@ -41,22 +41,43 @@
     <string name="filter_by_category">Filter by Category</string>
     <string name="all">All</string>
     <string name="filtered_products">Filtered Products</string>
-
+    <!-- Product Detail -->
+    <string name="product_detail_title">Product Details</string>
+    <string name="back">Back</string>
+    <string name="price_label">Price:</string>
+    <string name="category_label">Category:</string>
+    <string name="quantity_label">Quantity:</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="comments_title">Comments</string>
+    <string name="no_comments">No comments for this product.</string>
+    <string name="add_comment_title">Add a Comment</string>
+    <string name="send_comment">Send</string>
+    <string name="login_required_add_cart">Please log in to add to cart.</string>
+    <string name="login_required_comment">Please log in to comment.</string>
     <!-- Cart -->
     <string name="your_cart">Your Cart</string>
     <string name="empty_cart">Your cart is empty.</string>
     <string name="place_order">Place Order</string>
     <string name="order_success">Order placed successfully!</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="enter_valid_address">Please enter a valid address</string>
+
 
     <!-- Orders -->
-    <string name="no_orders_found">No orders found.</string>
-    <string name="order_number">Order</string>
     <string name="delivery_yes">Yes</string>
     <string name="delivery_no">No</string>
+    <string name="no_orders_found">No orders found.</string>
+    <string name="order_number">Order</string>
+    <string name="name">Name</string>
     <string name="address">Address</string>
     <string name="total">Total</string>
     <string name="date">Date</string>
     <string name="delivered">Delivered</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="error">Error</string>
+
 
     <!-- General -->
     <string name="loading">Loading...</string>

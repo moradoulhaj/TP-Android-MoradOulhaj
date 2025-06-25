@@ -18,12 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberAsyncImagePainter
+import com.example.tpandroidapp.R
 import com.example.tpandroidapp.data.model.OrderRequest
 import com.example.tpandroidapp.data.model.UserData
 
@@ -37,14 +39,24 @@ fun CartScreen(
     val context = LocalContext.current
     var address by remember { mutableStateOf("") }
 
-    // ✅ Extract user data from userData
-    val token = userData.token?:""
+    // User data
+    val token = userData.token ?: ""
     val userId = userData.id?.toString() ?: ""
     val fullname = userData.fullname ?: ""
     val phone = userData.phone ?: ""
 
+    // Localized strings (to avoid using them inside onClick)
+    val enterValidAddressText = stringResource(id = R.string.enter_valid_address)
+    val yourCartLabel = stringResource(id = R.string.your_cart)
+    val emptyCartText = stringResource(id = R.string.empty_cart)
+    val quantityLabel = stringResource(id = R.string.quantity_label)
+    val orderSummaryText = stringResource(id = R.string.order_summary)
+    val totalLabel = stringResource(id = R.string.total)
+    val deliveryAddressLabel = stringResource(id = R.string.delivery_address)
+    val placeOrderText = stringResource(id = R.string.place_order)
+    val orderSuccessText = stringResource(id = R.string.order_success)
 
-
+    // Load cart and handle events
     LaunchedEffect(Unit) {
         viewModel.handleIntent(CartIntent.LoadCart(token))
     }
@@ -84,7 +96,7 @@ fun CartScreen(
                         tint = MaterialTheme.colorScheme.primary
                     )
                     Text(
-                        "Commande validée avec succès !",
+                        orderSuccessText,
                         style = MaterialTheme.typography.titleLarge.copy(
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
@@ -105,7 +117,7 @@ fun CartScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Votre panier est vide",
+                        text = emptyCartText,
                         style = MaterialTheme.typography.titleMedium.copy(
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             fontWeight = FontWeight.Medium
@@ -121,7 +133,10 @@ fun CartScreen(
                         .verticalScroll(rememberScrollState())
                         .padding(16.dp)
                 ) {
-                    Text("Mon Panier", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold))
+                    Text(
+                        yourCartLabel,
+                        style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+                    )
                     Spacer(modifier = Modifier.height(16.dp))
 
                     cartItems.forEach { cartItem ->
@@ -148,7 +163,10 @@ fun CartScreen(
                                 Spacer(modifier = Modifier.width(16.dp))
                                 Column(modifier = Modifier.weight(1f)) {
                                     Text(cartItem.nameProduct, fontWeight = FontWeight.SemiBold)
-                                    Text("Quantité: ${cartItem.count}", color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                    Text(
+                                        "$quantityLabel: ${cartItem.count}",
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
                                     Text(
                                         "${cartItem.priceProduct} MAD",
                                         fontWeight = FontWeight.Bold,
@@ -165,12 +183,12 @@ fun CartScreen(
                         modifier = Modifier.padding(vertical = 8.dp)
                     ) {
                         Column(modifier = Modifier.padding(16.dp)) {
-                            Text("Récapitulatif de commande", fontWeight = FontWeight.Bold)
+                            Text(orderSummaryText, fontWeight = FontWeight.Bold)
                             Row(
                                 modifier = Modifier.fillMaxWidth(),
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
-                                Text("Total")
+                                Text(totalLabel)
                                 Text(
                                     "$totalAmount MAD",
                                     fontWeight = FontWeight.Bold,
@@ -180,7 +198,11 @@ fun CartScreen(
                         }
                     }
 
-                    Text("Adresse de livraison", fontWeight = FontWeight.SemiBold, modifier = Modifier.padding(vertical = 8.dp))
+                    Text(
+                        deliveryAddressLabel,
+                        fontWeight = FontWeight.SemiBold,
+                        modifier = Modifier.padding(vertical = 8.dp)
+                    )
 
                     BasicTextField(
                         value = address,
@@ -206,23 +228,21 @@ fun CartScreen(
                     Button(
                         onClick = {
                             if (address.isBlank()) {
-                                Toast.makeText(context, "Veuillez entrer une adresse valide", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, enterValidAddressText, Toast.LENGTH_SHORT).show()
                             } else {
                                 val currentCart = (state as? CartState.Success)?.items ?: emptyList()
                                 val total = currentCart.sumOf { it.priceProduct * it.count }.toInt()
 
                                 val orderRequest = OrderRequest(
                                     idUser = userData.id ?: 0,
-                                    phone = userData.phone ?: "",
+                                    phone = phone,
                                     address = address,
-                                    fullname = userData.fullname ?: "",
+                                    fullname = fullname,
                                     total = total,
                                     cart = (0..99).random() // test cart id
                                 )
 
-                                viewModel.handleIntent(
-                                    CartIntent.PlaceOrder(orderRequest)
-                                )
+                                viewModel.handleIntent(CartIntent.PlaceOrder(orderRequest))
                             }
                         },
                         modifier = Modifier
@@ -234,9 +254,8 @@ fun CartScreen(
                             contentColor = MaterialTheme.colorScheme.onPrimary
                         )
                     ) {
-                        Text("Valider la commande", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+                        Text(placeOrderText, fontSize = 16.sp, fontWeight = FontWeight.Bold)
                     }
-
 
                     Spacer(modifier = Modifier.height(32.dp))
                 }
@@ -244,3 +263,4 @@ fun CartScreen(
         }
     }
 }
+

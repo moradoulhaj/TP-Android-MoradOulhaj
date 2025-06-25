@@ -15,6 +15,9 @@
     <string name="phone">Téléphone</string>
     <string name="already_have_account">Vous avez déjà un compte ? Connectez-vous</string>
     <string name="account_created">Compte créé avec succès !</string>
+    <string name="order_summary">Récapitulatif de commande</string>
+    <string name="delivery_address">Adresse de livraison</string>
+    <string name="enter_valid_address">Veuillez entrer une adresse valide</string>
 
     <!-- Profil -->
     <string name="edit_profile">Modifier les informations</string>
@@ -48,15 +51,33 @@
     <string name="order_success">Commande passée avec succès !</string>
 
     <!-- Commandes -->
-    <string name="no_orders_found">Aucune commande trouvée.</string>
-    <string name="order_number">Commande</string>
     <string name="delivery_yes">Oui</string>
     <string name="delivery_no">Non</string>
+    <string name="no_orders_found">Aucune commande trouvée.</string>
+    <string name="order_number">Commande</string>
+    <string name="name">Nom</string>
     <string name="address">Adresse</string>
     <string name="total">Total</string>
     <string name="date">Date</string>
     <string name="delivered">Livrée</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="error">Erreur</string>
 
+
+    <!-- Détails du produit -->
+    <string name="product_detail_title">Détails du produit</string>
+    <string name="back">Retour</string>
+    <string name="price_label">Prix :</string>
+    <string name="category_label">Catégorie :</string>
+    <string name="quantity_label">Quantité :</string>
+    <string name="add_to_cart">Ajouter au Panier</string>
+    <string name="comments_title">Commentaires</string>
+    <string name="no_comments">Aucun commentaire pour ce produit.</string>
+    <string name="add_comment_title">Ajouter un commentaire</string>
+    <string name="send_comment">Envoyer</string>
+    <string name="login_required_add_cart">Veuillez vous connecter pour ajouter au panier.</string>
+    <string name="login_required_comment">Veuillez vous connecter pour commenter.</string>
     <!-- Général -->
     <string name="loading">Chargement...</string>
     <string name="error_occurred">Une erreur s\'est produite</string>
