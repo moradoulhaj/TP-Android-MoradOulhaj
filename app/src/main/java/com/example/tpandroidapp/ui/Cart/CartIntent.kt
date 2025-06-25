@@ -1,7 +1,10 @@
 package com.example.tpandroidapp.ui.Cart
 
+import com.example.tpandroidapp.data.model.OrderRequest
 
-    sealed class CartIntent {
+
+sealed class CartIntent {
         data class LoadCart(val token: String) : CartIntent()
-        data class PlaceOrder(val token: String, val address: String) : CartIntent()
-    }
+        data class PlaceOrder(
+            val orderRequest: OrderRequest
+        ) : CartIntent()    }

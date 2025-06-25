@@ -3,6 +3,8 @@ package com.example.tpandroidapp.data.network
 import com.example.tpandroidapp.data.model.Cart
 import com.example.tpandroidapp.data.model.Comment
 import com.example.tpandroidapp.data.model.CommentRequest
+import com.example.tpandroidapp.data.model.OrderRequest
+import com.example.tpandroidapp.data.model.OrderResponse
 import com.example.tpandroidapp.data.model.Product
 import com.example.tpandroidapp.data.model.UpdateUserRequest
 import com.example.tpandroidapp.data.model.UserCredentials
@@ -49,10 +51,24 @@ interface ApiService {
 
     @POST("/api/v1/carts")
     suspend fun addToCart(
-        @Header("Authorization") token: String,
+        @Header("token") token: String,
         @Query("idProduct") idProduct: Int,
         @Query("productCount") productCount: Int
     ): Response<Cart>
+
+    //History api
+    // Order History API (Post order)
+    @POST("/api/v1/history")
+    suspend fun placeOrder(
+        @Body orderRequest: OrderRequest
+    ): Response<OrderResponse>
+
+    // Fetch all orders for a specific user
+    @GET("/api/v1/history")
+    suspend fun getUserOrders(
+        @Query("idUser") userId: Int
+    ): Response<List<OrderResponse>>
+
 
 
 }

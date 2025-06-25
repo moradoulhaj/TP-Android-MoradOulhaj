@@ -4,7 +4,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.tpandroidapp.data.model.Cart
+import com.example.tpandroidapp.data.model.OrderRequest
 import com.example.tpandroidapp.data.repository.CartRepository
+import com.example.tpandroidapp.data.repository.OrderRepository
 import com.example.tpandroidapp.ui.Cart.CartIntent
 import com.example.tpandroidapp.ui.Cart.CartState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val cartRepository: CartRepository
+    private val cartRepository: CartRepository,
+    private val orderRepository: OrderRepository
 ) : ViewModel() {
 
     var state = mutableStateOf<CartState>(CartState.Loading)
@@ -27,7 +30,7 @@ class CartViewModel @Inject constructor(
     fun handleIntent(intent: CartIntent) {
         when (intent) {
             is CartIntent.LoadCart -> loadCart(intent.token)
-            is CartIntent.PlaceOrder -> placeOrder(intent.token, intent.address)
+            is CartIntent.PlaceOrder -> placeOrder(intent.orderRequest) // Pass the OrderRequest object
         }
     }
 
@@ -36,10 +39,17 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val response = cartRepository.getCart(token)
+
                 if (response.isSuccessful && response.body() != null) {
                     state.value = CartState.Success(response.body()!!)
                 } else {
-                    state.value = CartState.Error("Erreur : ${response.code()}")
+                    // Special case: empty cart
+                    val errorBody = response.errorBody()?.string()
+                    if (response.code() == 404 && errorBody?.contains("Cart is empty") == true) {
+                        state.value = CartState.Success(emptyList())
+                    } else {
+                        state.value = CartState.Error("Erreur : ${response.code()}")
+                    }
                 }
             } catch (e: Exception) {
                 state.value = CartState.Error("Erreur : ${e.localizedMessage ?: "Inconnue"}")
@@ -47,15 +57,18 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    private fun placeOrder(token: String, address: String) {
+    private fun placeOrder(orderRequest: OrderRequest) {
         viewModelScope.launch {
             try {
-                // TODO: call your order placing API here
-                // For demo, just simulate success
-                _eventFlow.send(UiEvent.ShowToast("Commande validée avec succès !"))
-                state.value = CartState.OrderPlaced
+                val response = orderRepository.placeOrder(orderRequest)
+                if (response.isSuccessful) {
+                    _eventFlow.send(UiEvent.ShowToast("Commande validée avec succès !"))
+                    state.value = CartState.OrderPlaced
+                } else {
+                    _eventFlow.send(UiEvent.ShowToast("Erreur : ${response.code()}"))
+                }
             } catch (e: Exception) {
-                _eventFlow.send(UiEvent.ShowToast("Erreur lors de la validation de la commande"))
+                _eventFlow.send(UiEvent.ShowToast("Erreur : ${e.localizedMessage ?: "Inconnue"}"))
             }
         }
     }
