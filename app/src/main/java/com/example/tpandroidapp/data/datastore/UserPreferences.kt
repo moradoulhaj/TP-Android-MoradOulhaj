@@ -21,6 +21,7 @@ class UserPreferences(private val context: Context) {
         val USER_CREATED_AT = stringPreferencesKey("user_created_at")
         val USER_UPDATED_AT = stringPreferencesKey("user_updated_at")
         val TOKEN = stringPreferencesKey("token")
+
     }
 
     suspend fun saveUser(user: UserData) {

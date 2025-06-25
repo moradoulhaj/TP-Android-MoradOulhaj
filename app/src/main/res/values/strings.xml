@@ -49,6 +49,7 @@
     <string name="empty_cart">Votre panier est vide.</string>
     <string name="place_order">Valider la commande</string>
     <string name="order_success">Commande passée avec succès !</string>
+    <string name="language">Langue</string>
 
     <!-- Commandes -->
     <string name="delivery_yes">Oui</string>

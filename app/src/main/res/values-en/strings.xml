@@ -63,6 +63,7 @@
     <string name="delivery_address">Delivery Address</string>
     <string name="enter_valid_address">Please enter a valid address</string>
 
+    <string name="language">Language</string>
 
     <!-- Orders -->
     <string name="delivery_yes">Yes</string>

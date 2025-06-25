@@ -26,8 +26,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import com.example.tpandroidapp.data.datastore.UserPreferences
-import com.example.tpandroidapp.ui.utils.CommentItem
-import kotlinx.coroutines.flow.collect
+import com.example.tpandroidapp.ui.utilsUI.CommentItem
 
 @OptIn(ExperimentalMaterial3Api::class)
     @Composable
