@@ -18,6 +18,10 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.tpandroidapp.data.model.UserData
+import com.example.tpandroidapp.R
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun UserOrdersScreen(
@@ -29,6 +33,19 @@ fun UserOrdersScreen(
     val state by viewModel.state
     val context = LocalContext.current
     val userId = userData.id ?: return
+
+    // Localized strings
+    val noOrdersText = stringResource(id = R.string.no_orders_found)
+    val orderLabel = stringResource(id = R.string.order_number)
+    val nameLabel = stringResource(id = R.string.name)
+    val phoneLabel = stringResource(id = R.string.phone)
+    val addressLabel = stringResource(id = R.string.address)
+    val totalLabel = stringResource(id = R.string.total)
+    val dateLabel = stringResource(id = R.string.date)
+    val deliveredLabel = stringResource(id = R.string.delivered)
+    val yes = stringResource(id = R.string.yes)
+    val no = stringResource(id = R.string.no)
+    val errorLabel = stringResource(id = R.string.error)
 
     LaunchedEffect(userId) {
         viewModel.handleIntent(OrderIntent.LoadUserOrders(userId))
@@ -61,7 +78,7 @@ fun UserOrdersScreen(
                     contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = "Aucune commande trouvée.",
+                        text = noOrdersText,
                         fontWeight = FontWeight.Medium,
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
@@ -87,37 +104,28 @@ fun UserOrdersScreen(
                                     .padding(16.dp)
                             ) {
                                 Text(
-                                    text = "Commande #${order.id}",
+                                    text = "$orderLabel #${order.id}",
                                     fontWeight = FontWeight.Bold,
                                     fontSize = 20.sp,
                                     color = MaterialTheme.colorScheme.primary
                                 )
                                 Spacer(modifier = Modifier.height(8.dp))
 
+                                Text("$nameLabel : ${order.fullname}", style = MaterialTheme.typography.bodyMedium)
+                                Text("$phoneLabel : ${order.phone}", style = MaterialTheme.typography.bodyMedium)
+                                Text("$addressLabel : ${order.address}", style = MaterialTheme.typography.bodyMedium)
                                 Text(
-                                    "Nom : ${order.fullname}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Text(
-                                    "Téléphone : ${order.phone}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Text(
-                                    "Adresse : ${order.address}",
-                                    style = MaterialTheme.typography.bodyMedium
-                                )
-                                Text(
-                                    "Total : ${order.total} MAD",
+                                    "$totalLabel : ${order.total} MAD",
                                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
                                 )
                                 Text(
-                                    "Date : ${order.createdAt}",
+                                    "$dateLabel : ${order.createdAt}",
                                     style = MaterialTheme.typography.bodySmall,
                                     color = MaterialTheme.colorScheme.onSurfaceVariant
                                 )
                                 Spacer(modifier = Modifier.height(4.dp))
                                 Text(
-                                    "Livrée : ${if (order.delivery) "Oui" else "Non"}",
+                                    "$deliveredLabel : ${if (order.delivery) yes else no}",
                                     fontWeight = FontWeight.Medium,
                                     color = if (order.delivery) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                                 )
@@ -134,7 +142,7 @@ fun UserOrdersScreen(
                 contentAlignment = Alignment.Center
             ) {
                 Text(
-                    "Erreur : ${currentState.message}",
+                    "$errorLabel : ${currentState.message}",
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodyLarge,
                     fontWeight = FontWeight.SemiBold
@@ -143,4 +151,5 @@ fun UserOrdersScreen(
         }
     }
 }
+
 

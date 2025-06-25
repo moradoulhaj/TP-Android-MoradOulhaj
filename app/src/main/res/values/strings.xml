@@ -1,3 +1,85 @@
 <resources>
-    <string name="app_name">TpAndroidApp</string>
+    <string name="app_name">BOOK HAVEN</string>
+
+    <!-- Connexion -->
+    <string name="sign_in">Se connecter</string>
+    <string name="email">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="dont_have_account">Pas encore de compte ? Inscrivez-vous</string>
+    <string name="login_error">Erreur de connexion</string>
+
+    <!-- Inscription -->
+    <string name="sign_up">S\'inscrire</string>
+    <string name="create_account">Créer un compte</string>
+    <string name="fullname">Nom complet</string>
+    <string name="phone">Téléphone</string>
+    <string name="already_have_account">Vous avez déjà un compte ? Connectez-vous</string>
+    <string name="account_created">Compte créé avec succès !</string>
+    <string name="order_summary">Récapitulatif de commande</string>
+    <string name="delivery_address">Adresse de livraison</string>
+    <string name="enter_valid_address">Veuillez entrer une adresse valide</string>
+
+    <!-- Profil -->
+    <string name="edit_profile">Modifier les informations</string>
+    <string name="cancel">Annuler</string>
+    <string name="save">Enregistrer</string>
+    <string name="logout">Se déconnecter</string>
+    <string name="role">Rôle</string>
+    <string name="created_at">Créé le</string>
+    <string name="admin">Administrateur</string>
+    <string name="customer">Client</string>
+    <string name="confirm_password">Confirmer le mot de passe</string>
+    <string name="password_hint">Mot de passe (laisser vide si inchangé)</string>
+
+    <!-- Navigation -->
+    <string name="home">Accueil</string>
+    <string name="cart">Panier</string>
+    <string name="orders">Commandes</string>
+    <string name="profile">Profil</string>
+
+    <!-- Produits -->
+    <string name="new_arrivals">Nouveautés</string>
+    <string name="best_deals">Meilleures Offres</string>
+    <string name="filter_by_category">Filtrer par Catégorie</string>
+    <string name="all">Tous</string>
+    <string name="filtered_products">Produits Filtrés</string>
+
+    <!-- Panier -->
+    <string name="your_cart">Votre panier</string>
+    <string name="empty_cart">Votre panier est vide.</string>
+    <string name="place_order">Valider la commande</string>
+    <string name="order_success">Commande passée avec succès !</string>
+    <string name="language">Langue</string>
+
+    <!-- Commandes -->
+    <string name="delivery_yes">Oui</string>
+    <string name="delivery_no">Non</string>
+    <string name="no_orders_found">Aucune commande trouvée.</string>
+    <string name="order_number">Commande</string>
+    <string name="name">Nom</string>
+    <string name="address">Adresse</string>
+    <string name="total">Total</string>
+    <string name="date">Date</string>
+    <string name="delivered">Livrée</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="error">Erreur</string>
+
+
+    <!-- Détails du produit -->
+    <string name="product_detail_title">Détails du produit</string>
+    <string name="back">Retour</string>
+    <string name="price_label">Prix :</string>
+    <string name="category_label">Catégorie :</string>
+    <string name="quantity_label">Quantité :</string>
+    <string name="add_to_cart">Ajouter au Panier</string>
+    <string name="comments_title">Commentaires</string>
+    <string name="no_comments">Aucun commentaire pour ce produit.</string>
+    <string name="add_comment_title">Ajouter un commentaire</string>
+    <string name="send_comment">Envoyer</string>
+    <string name="login_required_add_cart">Veuillez vous connecter pour ajouter au panier.</string>
+    <string name="login_required_comment">Veuillez vous connecter pour commenter.</string>
+    <!-- Général -->
+    <string name="loading">Chargement...</string>
+    <string name="error_occurred">Une erreur s\'est produite</string>
 </resources>

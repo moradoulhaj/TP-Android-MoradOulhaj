@@ -12,11 +12,15 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
+import com.example.tpandroidapp.R
+
 
 @Composable
 fun LoginScreen(
@@ -24,6 +28,14 @@ fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsState()
+    val context = LocalContext.current
+
+    // Localized strings
+    val welcomeBackText = stringResource(id = R.string.sign_in)
+    val emailLabel = stringResource(id = R.string.email)
+    val passwordLabel = stringResource(id = R.string.password)
+    val signInButton = stringResource(id = R.string.sign_in)
+    val noAccountText = stringResource(id = R.string.dont_have_account)
 
     Box(
         modifier = Modifier
@@ -35,8 +47,11 @@ fun LoginScreen(
             painter = rememberAsyncImagePainter("https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = Modifier.fillMaxSize().graphicsLayer { alpha = 0.6f }
+            modifier = Modifier
+                .fillMaxSize()
+                .graphicsLayer { alpha = 0.6f }
         )
+
         Card(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
@@ -52,7 +67,7 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Welcome Back",
+                    text = welcomeBackText,
                     style = MaterialTheme.typography.headlineMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -60,7 +75,7 @@ fun LoginScreen(
                 OutlinedTextField(
                     value = state.email,
                     onValueChange = { viewModel.onIntent(LoginIntent.EmailChanged(it)) },
-                    label = { Text("Email") },
+                    label = { Text(emailLabel) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true
                 )
@@ -68,7 +83,7 @@ fun LoginScreen(
                 OutlinedTextField(
                     value = state.password,
                     onValueChange = { viewModel.onIntent(LoginIntent.PasswordChanged(it)) },
-                    label = { Text("Password") },
+                    label = { Text(passwordLabel) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                     visualTransformation = PasswordVisualTransformation()
@@ -89,7 +104,7 @@ fun LoginScreen(
                             strokeWidth = 2.dp
                         )
                     } else {
-                        Text("Sign In")
+                        Text(signInButton)
                     }
                 }
 
@@ -104,10 +119,9 @@ fun LoginScreen(
                 TextButton(onClick = {
                     navController.navigate("signup")
                 }) {
-                    Text("Don't have an account? Sign Up")
+                    Text(noAccountText)
                 }
 
-                // Navigate to home if login successful
                 if (state.isSuccess) {
                     LaunchedEffect(Unit) {
                         navController.navigate("home") {

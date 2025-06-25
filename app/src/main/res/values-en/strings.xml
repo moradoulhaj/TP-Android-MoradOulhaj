@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BOOK HAVEN</string>
+
+    <!-- Login -->
+    <string name="sign_in">Sign In</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="dont_have_account">Don\'t have an account? Sign Up</string>
+    <string name="login_error">Login error</string>
+
+    <!-- Signup -->
+    <string name="sign_up">Sign Up</string>
+    <string name="create_account">Create Account</string>
+    <string name="fullname">Full Name</string>
+    <string name="phone">Phone</string>
+    <string name="already_have_account">Already have an account? Sign In</string>
+    <string name="account_created">Account created successfully!</string>
+
+    <!-- Profile -->
+    <string name="edit_profile">Edit Profile</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="logout">Logout</string>
+    <string name="role">Role</string>
+    <string name="created_at">Created on</string>
+    <string name="admin">Admin</string>
+    <string name="customer">Customer</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="password_hint">Password (leave empty if unchanged)</string>
+
+    <!-- Navigation -->
+    <string name="home">Home</string>
+    <string name="cart">Cart</string>
+    <string name="orders">Orders</string>
+    <string name="profile">Profile</string>
+
+    <!-- Products -->
+    <string name="new_arrivals">New Arrivals</string>
+    <string name="best_deals">Best Deals</string>
+    <string name="filter_by_category">Filter by Category</string>
+    <string name="all">All</string>
+    <string name="filtered_products">Filtered Products</string>
+    <!-- Product Detail -->
+    <string name="product_detail_title">Product Details</string>
+    <string name="back">Back</string>
+    <string name="price_label">Price:</string>
+    <string name="category_label">Category:</string>
+    <string name="quantity_label">Quantity:</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="comments_title">Comments</string>
+    <string name="no_comments">No comments for this product.</string>
+    <string name="add_comment_title">Add a Comment</string>
+    <string name="send_comment">Send</string>
+    <string name="login_required_add_cart">Please log in to add to cart.</string>
+    <string name="login_required_comment">Please log in to comment.</string>
+    <!-- Cart -->
+    <string name="your_cart">Your Cart</string>
+    <string name="empty_cart">Your cart is empty.</string>
+    <string name="place_order">Place Order</string>
+    <string name="order_success">Order placed successfully!</string>
+    <string name="order_summary">Order Summary</string>
+    <string name="delivery_address">Delivery Address</string>
+    <string name="enter_valid_address">Please enter a valid address</string>
+
+    <string name="language">Language</string>
+
+    <!-- Orders -->
+    <string name="delivery_yes">Yes</string>
+    <string name="delivery_no">No</string>
+    <string name="no_orders_found">No orders found.</string>
+    <string name="order_number">Order</string>
+    <string name="name">Name</string>
+    <string name="address">Address</string>
+    <string name="total">Total</string>
+    <string name="date">Date</string>
+    <string name="delivered">Delivered</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="error">Error</string>
+
+
+    <!-- General -->
+    <string name="loading">Loading...</string>
+    <string name="error_occurred">An error occurred</string>
+</resources>

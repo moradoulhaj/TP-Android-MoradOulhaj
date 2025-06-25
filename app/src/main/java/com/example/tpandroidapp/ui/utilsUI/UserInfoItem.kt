@@ -1,4 +1,4 @@
-package com.example.tpandroidapp.ui.utils
+package com.example.tpandroidapp.ui.utilsUI
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

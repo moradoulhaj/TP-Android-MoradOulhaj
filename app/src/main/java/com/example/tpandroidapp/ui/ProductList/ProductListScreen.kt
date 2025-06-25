@@ -1,6 +1,5 @@
 package com.example.tpandroidapp.ui.ProductList
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
@@ -9,12 +8,13 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import com.example.tpandroidapp.R
 import com.example.tpandroidapp.data.model.Product
-import com.example.tpandroidapp.ui.utils.ProductCardWithCarousel
+import com.example.tpandroidapp.ui.utilsUI.ProductCardWithCarousel
 
 @Composable
 fun ProductListScreen(
@@ -39,7 +39,9 @@ fun ProductListScreen(
         is ProductListState.Error -> {
             Box(modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    "Erreur : ${(state as ProductListState.Error).message}",
+                    text = stringResource(
+                        id = R.string.error_occurred
+                    ) + " : ${(state as ProductListState.Error).message}",
                     color = MaterialTheme.colorScheme.error
                 )
             }
@@ -60,19 +62,19 @@ fun ProductListScreen(
             ) {
                 // New Arrivals
                 item {
-                    SectionHeader("Nouveautés")
+                    SectionHeader(title = stringResource(id = R.string.new_arrivals))
                     ProductCarousel(newArrivals, navController)
                 }
 
                 // Best Deals
                 item {
-                    SectionHeader("Meilleures Offres")
+                    SectionHeader(title = stringResource(id = R.string.best_deals))
                     ProductCarousel(bestDeals, navController)
                 }
 
                 // Category Filters
                 item {
-                    SectionHeader("Filtrer par Catégorie")
+                    SectionHeader(title = stringResource(id = R.string.filter_by_category))
                     LazyRow(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
                         modifier = Modifier
@@ -83,7 +85,7 @@ fun ProductListScreen(
                             FilterChip(
                                 selected = selectedCategory == null,
                                 onClick = { selectedCategory = null },
-                                label = { Text("Tous") }
+                                label = { Text(stringResource(id = R.string.all)) }
                             )
                         }
                         items(categories) { category ->
