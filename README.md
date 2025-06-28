@@ -1,55 +1,116 @@
-# 📱 Catalogue de Produits - Android App
+# 📱 BOOK Haven – Application Mobile Kotlin (Jetpack Compose)
 
-Bienvenue dans **Catalogue Produits**, une application mobile développée avec **Jetpack Compose** et **Kotlin**, qui permet de consulter une liste de produits et d’en afficher les détails.
-
----
-
-## 👨‍💻 Dev
-
-**Morad Oulhaj**  
-_Master DevOps & Cloud Computing_
+BOOK Haven est une application e-commerce mobile native développée avec **Kotlin** et **Jetpack Compose**.  
+Elle permet aux utilisateurs de consulter des livres, gérer leur panier, passer commande et modifier leur profil, le tout dans une interface fluide, bilingue (🇫🇷 / 🇺🇸) et moderne.
 
 ---
 
-## ✨ Fonctionnalités principales
+## ✨ Fonctionnalités Clés
 
-- 🛒 Affichage d’une **liste de produits**
-- 🔍 Navigation vers les **détails d’un produit**
-- 🖼️ Chargement dynamique des **images**
-- 💰 Affichage du **prix** 
+L'application mobile propose une expérience complète côté utilisateur :
+
+### 👤 Gestion Utilisateur
+- 🔐 **Connexion / Inscription sécurisées** avec JWT
+- 👋 **Déconnexion** et suppression des données locales
+- 🧑 **Profil personnalisable**
+- 🌐 **Internationalisation automatique** en fonction de la langue du système (🇫🇷 Français / 🇺🇸 Anglais)
+
+### 📚 Navigation Produits
+- 🏠 **Page d'accueil** avec nouveautés et meilleures offres
+- 🔍 **Liste des livres** par catégorie
+- 📖 **Détail produit** avec image, prix et description
+- ❤️ **Ajout au panier** en un clic
+
+### 🛒 Panier & Commande
+- 📦 **Consultation et modification du panier**
+- ➖ **Suppression d’un article**
+- ✅ **Validation de commande**
+- 📜 **Historique des commandes**
 
 ---
 
-## 🧩 Technologies & Dépendances
+## 🧱 Stack Technique
 
-Ce projet utilise les bibliothèques suivantes :
+| Composant             | Technologie utilisée          |
+|-----------------------|-------------------------------|
+| UI                    | Jetpack Compose               |
+| Architecture          | MVI (Model - View - Intent)   |
+| Navigation            | Navigation Compose            |
+| DI                    | Hilt                          |
+| API REST              | Retrofit + Gson               |
+| Stockage local        | DataStore (clé, token JWT)    |
+| Chargement images     | Coil                          |
+| i18n                  | strings.xml / strings-fr.xml  |
 
-- ⚙️ [Jetpack Compose](https://developer.android.com/jetpack/compose) — pour la construction de l’UI déclarative
-- 🧭 [Navigation Compose](https://developer.android.com/jetpack/compose/navigation) — pour la navigation entre les écrans
+---
 
-## Additional Dependencies Added
+## 📁 Structure du projet
 
-These dependencies were explicitly added to support Jetpack Compose UI, Material3, and Navigation:
+├── ui/
+│ ├── Login/
+│ ├── Signup/
+│ ├── Home/
+│ ├── ProductList/
+│ ├── Cart/
+│ ├── Profile/
+│ ├── Order/
+│ └── utilsUI/ (composants réutilisables)
+├── data/
+│ ├── model/
+│ ├── network/
+│ ├── repository/
+│ └── datastore/
+├── nav/
+│ └── AppRootNavigation.kt
+├── theme/
+├── MyApp.kt
+└── MainActivity.kt
 
-```kotlin
-// Compose UI libraries
-implementation("androidx.compose.ui:ui")
-implementation("androidx.compose.ui:ui-graphics")
-implementation("androidx.compose.ui:ui-tooling-preview")
-implementation("androidx.compose.runtime:runtime")
+---
 
-// Material Design 3 components for Compose
-implementation("androidx.compose.material3:material3")
+## 🚀 Lancer l’application (mode développement)
 
-// Navigation component for Compose
-implementation("androidx.navigation:navigation-compose:2.7.5")
+## 🔧 Backend – Serveur Node.js
 
-// Debug and testing tools for Compose
-debugImplementation("androidx.compose.ui:ui-tooling")
-debugImplementation("androidx.compose.ui:ui-test-manifest")
-androidTestImplementation(platform("androidx.compose:compose-bom:<version>"))
-androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+Le backend de l'application est basé sur le dépôt suivant :  
+👉 [`sangnguyen190997/shopping-ecommerce`](https://github.com/sangnguyen190997/shopping-ecommerce/tree/master/backend)
+
+### ✅ Étapes essentielles :
+
+```bash
+# 1. Cloner le dépôt
+git clone https://github.com/sangnguyen190997/shopping-ecommerce.git
+cd shopping-ecommerce/backend
+
+# 2. Installer les dépendances
+npm install
+
+# 3. Lancer le serveur
+node index.js
 ```
+
+ℹ️ Les autres étapes détaillées de configuration sont disponibles dans le README original du backend et dans le rapport fourni avec ce projet.
+## 🔧 Mobile – Kotlin
+
+### Prérequis
+- Android Studio (Flamingo+)
+- Kotlin 1.9+
+- Émulateur Android ou smartphone
+
+### Étapes
+
+```bash
+# 1. Cloner le projet
+git clone https://github.com/moradoulhaj/TP-Android-MoradOulhaj
+cd TP-Android-MoradOulhaj
+
+# 2. Ouvrir avec Android Studio
+
+# 3. Lancer l’application sur un émulateur ou appareil connecté
+
+# ✅ L’application s’adapte automatiquement à la langue du système (français / anglais)
+
+
 ## 🧩Screenshots
 
 ### Catalog View
