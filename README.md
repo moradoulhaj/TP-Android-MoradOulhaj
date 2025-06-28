@@ -45,6 +45,7 @@ L'application mobile propose une expérience complète côté utilisateur :
 ---
 
 ## 📁 Structure du projet
+```bash
 
 ├── ui/
 │ ├── Login/
@@ -65,7 +66,7 @@ L'application mobile propose une expérience complète côté utilisateur :
 ├── theme/
 ├── MyApp.kt
 └── MainActivity.kt
-
+```
 ---
 
 ## 🚀 Lancer l’application (mode développement)
@@ -110,31 +111,52 @@ cd TP-Android-MoradOulhaj
 
 # ✅ L’application s’adapte automatiquement à la langue du système (français / anglais)
 ```
-##📱 Screenshots – Application Mobile Kotlin
-🔐 Connexion (Login)
-![Catalog Screenshot](./screenshots/login.png)
+## 📱 Screenshots – Application Mobile Kotlin
 
+### 🔐 Connexion (Login)
+<p align="center">
+  <img src="./app/screenshots/login.png" alt="Login" width="500"/>
+</p>
 
-📝 Inscription (Signup)
-![Catalog Screenshot](./screenshots/inscription.png)
+---
 
+### 📝 Inscription (Signup)
+<p align="center">
+  <img src="./app/screenshots/inscription.png" alt="Signup" width="500"/>
+</p>
 
-🏠 Accueil Utilisateur
-![Catalog Screenshot](./screenshots/acceuil.png)
+---
 
+### 🏠 Accueil Utilisateur
+<p align="center">
+  <img src="./app/screenshots/acceuil.png" alt="Accueil" width="500"/>
+</p>
 
-📖 Détail Produit
+---
 
-![Catalog Screenshot](./screenshots/detail.png)
+### 📖 Détail Produit
+<p align="center">
+  <img src="./app/screenshots/detail.png" alt="Détail Produit" width="500"/>
+</p>
 
-🛒 Panier
-![Catalog Screenshot](./screenshots/cart.png)
+---
 
+### 🛒 Panier
+<p align="center">
+  <img src="./app/screenshots/cart.png" alt="Panier" width="500"/>
+</p>
 
-👤 Profil Utilisateur
+---
 
-![Catalog Screenshot](./screenshots/profile.png)
+### 👤 Profil Utilisateur
+<p align="center">
+  <img src="./app/screenshots/profile.png" alt="Profil" width="500"/>
+</p>
 
-📜 Historique des Commandes
-![Catalog Screenshot](./screenshots/commande.png)
+---
+
+### 📜 Historique des Commandes
+<p align="center">
+  <img src="./app/screenshots/commande.png" alt="Commandes" width="500"/>
+</p>
 
