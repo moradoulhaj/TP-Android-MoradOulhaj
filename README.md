@@ -37,7 +37,7 @@ L'application mobile propose une expérience complète côté utilisateur :
 | Architecture          | MVI (Model - View - Intent)   |
 | Navigation            | Navigation Compose            |
 | DI                    | Hilt                          |
-| API REST              | Retrofit + Gson               |
+| API REST              | Retrofit              |
 | Stockage local        | DataStore (clé, token JWT)    |
 | Chargement images     | Coil                          |
 | i18n                  | strings.xml / strings-fr.xml  |
@@ -109,12 +109,32 @@ cd TP-Android-MoradOulhaj
 # 3. Lancer l’application sur un émulateur ou appareil connecté
 
 # ✅ L’application s’adapte automatiquement à la langue du système (français / anglais)
+```
+##📱 Screenshots – Application Mobile Kotlin
+🔐 Connexion (Login)
+![Catalog Screenshot](./screenshots/login.png)
 
 
-## 🧩Screenshots
+📝 Inscription (Signup)
+![Catalog Screenshot](./screenshots/inscription.png)
 
-### Catalog View
-![Catalog Screenshot](./screenshots/List.png)
 
-### Product Details
-![Product Details Screenshot](./screenshots/Item.png)
+🏠 Accueil Utilisateur
+![Catalog Screenshot](./screenshots/acceuil.png)
+
+
+📖 Détail Produit
+
+![Catalog Screenshot](./screenshots/detail.png)
+
+🛒 Panier
+![Catalog Screenshot](./screenshots/cart.png)
+
+
+👤 Profil Utilisateur
+
+![Catalog Screenshot](./screenshots/profile.png)
+
+📜 Historique des Commandes
+![Catalog Screenshot](./screenshots/commande.png)
+
