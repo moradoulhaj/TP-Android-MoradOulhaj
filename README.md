@@ -143,7 +143,7 @@ cd TP-Android-MoradOulhaj
 
 ### 🛒 Panier
 <p align="center">
-  <img src="./app/screenshots/cart.png" alt="Panier" width="500"/>
+  <img src="./app/screenshots/panier.png" alt="Panier" width="500"/>
 </p>
 
 ---
